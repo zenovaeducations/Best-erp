@@ -87,11 +87,12 @@ window.location.href =
 
 }
 
-}catch(error){
+}
+catch(error){
 
-console.log(error);
+console.error(error);
 
-alert("Login Failed");
+alert(error.message);
 
 }
 
