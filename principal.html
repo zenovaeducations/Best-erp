@@ -1,11 +1,466 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
 <title>Principal Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+
+font-family:'Poppins',sans-serif;
+
+background:#FAF8F5;
+
+padding-bottom:90px;
+}
+
+/* HEADER */
+
+.header{
+
+padding:20px;
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+}
+
+.logo{
+
+width:55px;
+height:55px;
+
+object-fit:contain;
+}
+
+.header-text h2{
+
+font-size:18px;
+
+color:#5B21B6;
+}
+
+.header-text p{
+
+font-size:12px;
+
+color:#666;
+}
+
+/* WELCOME */
+
+.welcome-card{
+
+margin:15px;
+
+padding:20px;
+
+background:white;
+
+border:2px solid #DC2626;
+
+box-shadow:6px 6px 0px #5B21B6;
+}
+
+.welcome-card h3{
+
+font-size:24px;
+
+color:#111827;
+}
+
+.welcome-card p{
+
+margin-top:5px;
+
+color:#666;
+}
+
+/* STATS */
+
+.stats-grid{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:12px;
+
+padding:15px;
+}
+
+.stat-card{
+
+background:white;
+
+padding:18px;
+
+border:2px solid #DC2626;
+
+box-shadow:5px 5px 0px #5B21B6;
+}
+
+.stat-card h4{
+
+font-size:13px;
+
+color:#666;
+
+margin-bottom:10px;
+}
+
+.stat-card h2{
+
+font-size:28px;
+
+color:#5B21B6;
+}
+
+/* ALERTS */
+
+.section{
+
+padding:15px;
+}
+
+.section-title{
+
+font-size:18px;
+
+font-weight:700;
+
+margin-bottom:12px;
+
+color:#111827;
+}
+
+.alert-card{
+
+background:white;
+
+border-left:5px solid #DC2626;
+
+padding:15px;
+
+margin-bottom:10px;
+
+box-shadow:4px 4px 0px #5B21B6;
+}
+
+.alert-card p{
+
+font-size:14px;
+}
+
+/* ACTIVITY */
+
+.activity-card{
+
+background:white;
+
+padding:15px;
+
+margin-bottom:10px;
+
+box-shadow:4px 4px 0px #5B21B6;
+
+border:1px solid #ddd;
+}
+
+.activity-card p{
+
+font-size:14px;
+}
+
+/* NAVIGATION */
+
+.bottom-nav{
+
+position:fixed;
+
+bottom:0;
+
+left:0;
+
+width:100%;
+
+background:white;
+
+display:flex;
+
+justify-content:space-around;
+
+padding:12px 0;
+
+border-top:2px solid #DC2626;
+}
+
+.nav-item{
+
+text-align:center;
+
+font-size:12px;
+
+color:#5B21B6;
+
+font-weight:600;
+}
+
+.nav-icon{
+
+font-size:22px;
+
+display:block;
+
+margin-bottom:4px;
+}
+
+</style>
+
 </head>
+
 <body>
 
-<h1>Principal Dashboard</h1>
+<!-- HEADER -->
+
+<div class="header">
+
+<img src="assets/logo.png"
+class="logo">
+
+<div class="header-text">
+
+<h2>BEST ERP</h2>
+
+<p>Principal Dashboard</p>
+
+</div>
+
+</div>
+
+<!-- WELCOME -->
+
+<div class="welcome-card">
+
+<h3>
+Good Morning ☀️
+</h3>
+
+<p>
+Mr. Anand S. Yettinamani
+</p>
+
+<p>
+Academic Year 2026-27
+</p>
+
+</div>
+
+<!-- STATS -->
+
+<div class="stats-grid">
+
+<div class="stat-card">
+
+<h4>Total Students</h4>
+
+<h2>1250</h2>
+
+</div>
+
+<div class="stat-card">
+
+<h4>Total Teachers</h4>
+
+<h2>48</h2>
+
+</div>
+
+<div class="stat-card">
+
+<h4>Today's Attendance</h4>
+
+<h2>92%</h2>
+
+</div>
+
+<div class="stat-card">
+
+<h4>New Admissions</h4>
+
+<h2>12</h2>
+
+</div>
+
+<div class="stat-card">
+
+<h4>Today's Fees</h4>
+
+<h2>₹85K</h2>
+
+</div>
+
+<div class="stat-card">
+
+<h4>Pending Fees</h4>
+
+<h2>₹32L</h2>
+
+</div>
+
+<div class="stat-card">
+
+<h4>Total Collection</h4>
+
+<h2>₹92L</h2>
+
+</div>
+
+<div class="stat-card">
+
+<h4>Expected Fees</h4>
+
+<h2>₹1.25Cr</h2>
+
+</div>
+
+</div>
+
+<!-- ALERTS -->
+
+<div class="section">
+
+<div class="section-title">
+
+Alerts
+
+</div>
+
+<div class="alert-card">
+
+<p>
+⚠ 32 Fee Defaulters
+</p>
+
+</div>
+
+<div class="alert-card">
+
+<p>
+⚠ 5 Leave Requests
+</p>
+
+</div>
+
+<div class="alert-card">
+
+<p>
+⚠ 7 New Admissions Pending
+</p>
+
+</div>
+
+</div>
+
+<!-- RECENT ACTIVITY -->
+
+<div class="section">
+
+<div class="section-title">
+
+Recent Activity
+
+</div>
+
+<div class="activity-card">
+
+<p>
+✓ New Teacher Added
+</p>
+
+</div>
+
+<div class="activity-card">
+
+<p>
+✓ Fee Payment Received
+</p>
+
+</div>
+
+<div class="activity-card">
+
+<p>
+✓ Notification Sent
+</p>
+
+</div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+
+<div class="bottom-nav">
+
+<div class="nav-item">
+
+<span class="nav-icon">🏠</span>
+
+Home
+
+</div>
+
+<div class="nav-item">
+
+<span class="nav-icon">👥</span>
+
+People
+
+</div>
+
+<div class="nav-item">
+
+<span class="nav-icon">📚</span>
+
+Academics
+
+</div>
+
+<div class="nav-item">
+
+<span class="nav-icon">💰</span>
+
+Finance
+
+</div>
+
+<div class="nav-item">
+
+<span class="nav-icon">☰</span>
+
+More
+
+</div>
+
+</div>
 <script type="module"
 src="js/check-auth.js"></script>
   <button id="logoutBtn">
@@ -14,4 +469,7 @@ Logout
   <script type="module"
 src="js/logout.js"></script>
 </body>
+</html>
+</body>
+
 </html>
