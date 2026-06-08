@@ -2,14 +2,11 @@ import { auth, db }
 from "./firebase-config.js";
 
 import {
-
-GoogleAuthProvider,
-
-signInWithPopup
-
+ GoogleAuthProvider,
+ signInWithRedirect,
+ getRedirectResult
 }
 from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
-
 import {
 
 doc,
@@ -19,19 +16,21 @@ getDoc
 }
 from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
-const provider =
-new GoogleAuthProvider();
+const provider = new GoogleAuthProvider();
 
 document
 .getElementById("googleLogin")
-.addEventListener("click", login);
+.addEventListener("click", ()=>{
+
+signInWithRedirect(auth, provider);
+
+});
 
 async function login(){
 
 try{
 
-const result =
-await signInWithPopup(auth,provider);
+const result = await signInWithRedirect(auth, provider) 
 
 const user = result.user;
 
