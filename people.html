@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>People Management</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+
+font-family:'Poppins',sans-serif;
+
+background:#FAF8F5;
+
+padding-bottom:90px;
+}
+
+/* HEADER */
+
+.header{
+
+padding:20px;
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+}
+
+.logo{
+
+width:55px;
+height:55px;
+
+object-fit:contain;
+}
+
+.header-text h2{
+
+color:#5B21B6;
+
+font-size:18px;
+}
+
+.header-text p{
+
+font-size:12px;
+
+color:#666;
+}
+
+/* SEARCH */
+
+.search-wrap{
+
+padding:15px;
+}
+
+.search-box{
+
+width:100%;
+
+padding:15px;
+
+border:2px solid #DC2626;
+
+font-size:15px;
+
+outline:none;
+}
+
+/* STATS */
+
+.stats-grid{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:12px;
+
+padding:15px;
+}
+
+.stat-card{
+
+background:white;
+
+padding:18px;
+
+border:2px solid #DC2626;
+
+box-shadow:5px 5px 0px #5B21B6;
+}
+
+.stat-card h4{
+
+font-size:13px;
+
+color:#666;
+
+margin-bottom:8px;
+}
+
+.stat-card h2{
+
+font-size:28px;
+
+color:#5B21B6;
+}
+
+/* SECTION TITLE */
+
+.section-title{
+
+padding:0 15px;
+
+margin-top:10px;
+
+margin-bottom:15px;
+
+font-size:20px;
+
+font-weight:700;
+}
+
+/* PEOPLE CARDS */
+
+.people-list{
+
+padding:0 15px;
+}
+
+.people-card{
+
+display:block;
+
+text-decoration:none;
+
+background:white;
+
+border:2px solid #DC2626;
+
+box-shadow:5px 5px 0px #5B21B6;
+
+padding:18px;
+
+margin-bottom:15px;
+
+color:#111827;
+}
+
+.people-card-top{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+}
+
+.people-card h3{
+
+font-size:18px;
+}
+
+.people-count{
+
+color:#5B21B6;
+
+font-weight:700;
+
+font-size:22px;
+}
+
+.people-meta{
+
+margin-top:10px;
+
+font-size:13px;
+
+color:#666;
+}
+
+/* NAVIGATION */
+
+.bottom-nav{
+
+position:fixed;
+
+bottom:0;
+
+left:0;
+
+width:100%;
+
+background:white;
+
+border-top:2px solid #DC2626;
+
+display:flex;
+
+justify-content:space-around;
+
+padding:12px 0;
+}
+
+.nav-item{
+
+text-align:center;
+
+font-size:12px;
+
+color:#5B21B6;
+
+font-weight:600;
+
+text-decoration:none;
+}
+
+.nav-icon{
+
+font-size:22px;
+
+display:block;
+
+margin-bottom:4px;
+}
+
+.active{
+
+color:#DC2626;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<div class="header">
+
+<img src="assets/logo.png"
+class="logo">
+
+<div class="header-text">
+
+<h2>BEST ERP</h2>
+
+<p>People Management</p>
+
+</div>
+
+</div>
+
+<!-- SEARCH -->
+
+<div class="search-wrap">
+
+<input
+type="text"
+class="search-box"
+placeholder="Search Student, Teacher or Staff">
+
+</div>
+
+<!-- STATS -->
+
+<div class="stats-grid">
+
+<div class="stat-card">
+
+<h4>Total Students</h4>
+
+<h2>1250</h2>
+
+</div>
+
+<div class="stat-card">
+
+<h4>Present Today</h4>
+
+<h2>1180</h2>
+
+</div>
+
+<div class="stat-card">
+
+<h4>Total Teachers</h4>
+
+<h2>48</h2>
+
+</div>
+
+<div class="stat-card">
+
+<h4>Total Staff</h4>
+
+<h2>22</h2>
+
+</div>
+
+</div>
+
+<h2 class="section-title">
+People Directory
+</h2>
+
+<div class="people-list">
+
+<a href="students.html"
+class="people-card">
+
+<div class="people-card-top">
+
+<h3>Students</h3>
+
+<div class="people-count">
+1250
+</div>
+
+</div>
+
+<div class="people-meta">
+
+Present: 1180 • Absent: 70
+
+</div>
+
+</a>
+
+<a href="teachers.html"
+class="people-card">
+
+<div class="people-card-top">
+
+<h3>Teachers</h3>
+
+<div class="people-count">
+48
+</div>
+
+</div>
+
+<div class="people-meta">
+
+Present: 45 • Absent: 3
+
+</div>
+
+</a>
+
+<a href="preprimary-staff.html"
+class="people-card">
+
+<div class="people-card-top">
+
+<h3>Pre Primary Staff</h3>
+
+<div class="people-count">
+8
+</div>
+
+</div>
+
+<div class="people-meta">
+
+Present: 8 • Absent: 0
+
+</div>
+
+</a>
+
+<a href="school-staff.html"
+class="people-card">
+
+<div class="people-card-top">
+
+<h3>School Staff</h3>
+
+<div class="people-count">
+12
+</div>
+
+</div>
+
+<div class="people-meta">
+
+Present: 11 • Absent: 1
+
+</div>
+
+</a>
+
+<a href="college-staff.html"
+class="people-card">
+
+<div class="people-card-top">
+
+<h3>PU College Staff</h3>
+
+<div class="people-count">
+15
+</div>
+
+</div>
+
+<div class="people-meta">
+
+Present: 14 • Absent: 1
+
+</div>
+
+</a>
+
+<a href="office-staff.html"
+class="people-card">
+
+<div class="people-card-top">
+
+<h3>Office Staff</h3>
+
+<div class="people-count">
+5
+</div>
+
+</div>
+
+<div class="people-meta">
+
+Present: 5 • Absent: 0
+
+</div>
+
+</a>
+
+</div>
+
+<!-- BOTTOM NAV -->
+
+<div class="bottom-nav">
+
+<a href="principal.html"
+class="nav-item">
+
+<span class="nav-icon">🏠</span>
+
+Home
+
+</a>
+
+<a href="people.html"
+class="nav-item active">
+
+<span class="nav-icon">👥</span>
+
+People
+
+</a>
+
+<a href="#"
+class="nav-item">
+
+<span class="nav-icon">📚</span>
+
+Academics
+
+</a>
+
+<a href="#"
+class="nav-item">
+
+<span class="nav-icon">💰</span>
+
+Finance
+
+</a>
+
+<a href="#"
+class="nav-item">
+
+<span class="nav-icon">☰</span>
+
+More
+
+</a>
+
+</div>
+
+</body>
+</html>
