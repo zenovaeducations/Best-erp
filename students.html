@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Students Management</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+
+font-family:'Poppins',sans-serif;
+
+background:#FAF8F5;
+
+padding-bottom:90px;
+}
+
+/* HEADER */
+
+.header{
+
+padding:20px;
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+}
+
+.logo{
+
+width:55px;
+height:55px;
+object-fit:contain;
+}
+
+.header-text h2{
+
+color:#5B21B6;
+font-size:18px;
+}
+
+.header-text p{
+
+font-size:12px;
+color:#666;
+}
+
+/* SEARCH */
+
+.search-wrap{
+
+padding:15px;
+}
+
+.search-box{
+
+width:100%;
+
+padding:15px;
+
+border:2px solid #DC2626;
+
+outline:none;
+
+font-size:15px;
+}
+
+/* OVERVIEW */
+
+.overview{
+
+padding:15px;
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:12px;
+}
+
+.overview-card{
+
+background:white;
+
+padding:18px;
+
+border:2px solid #DC2626;
+
+box-shadow:5px 5px 0 #5B21B6;
+}
+
+.overview-card h4{
+
+font-size:13px;
+
+color:#666;
+
+margin-bottom:8px;
+}
+
+.overview-card h2{
+
+color:#5B21B6;
+
+font-size:28px;
+}
+
+/* SECTION TITLE */
+
+.section-title{
+
+padding:15px;
+
+font-size:22px;
+
+font-weight:700;
+
+color:#111827;
+}
+
+/* CLASS CARD */
+
+.class-list{
+
+padding:0 15px;
+}
+
+.class-card{
+
+display:block;
+
+text-decoration:none;
+
+background:white;
+
+border:2px solid #DC2626;
+
+box-shadow:5px 5px 0 #5B21B6;
+
+padding:18px;
+
+margin-bottom:15px;
+
+color:#111827;
+}
+
+.class-top{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+}
+
+.class-name{
+
+font-size:18px;
+
+font-weight:700;
+}
+
+.class-count{
+
+font-size:24px;
+
+font-weight:700;
+
+color:#5B21B6;
+}
+
+.class-meta{
+
+margin-top:10px;
+
+font-size:13px;
+
+color:#666;
+}
+
+/* ADD BUTTON */
+
+.add-btn{
+
+position:fixed;
+
+right:20px;
+
+bottom:90px;
+
+background:#DC2626;
+
+color:white;
+
+border:none;
+
+padding:15px 20px;
+
+font-size:16px;
+
+font-weight:700;
+
+cursor:pointer;
+
+box-shadow:5px 5px 0 #5B21B6;
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav{
+
+position:fixed;
+
+bottom:0;
+
+left:0;
+
+width:100%;
+
+background:white;
+
+border-top:2px solid #DC2626;
+
+display:flex;
+
+justify-content:space-around;
+
+padding:12px 0;
+}
+
+.nav-item{
+
+text-decoration:none;
+
+text-align:center;
+
+font-size:12px;
+
+font-weight:600;
+
+color:#5B21B6;
+}
+
+.nav-icon{
+
+display:block;
+
+font-size:22px;
+
+margin-bottom:4px;
+}
+
+.active{
+
+color:#DC2626;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<div class="header">
+
+<img src="assets/logo.png"
+class="logo">
+
+<div class="header-text">
+
+<h2>BEST ERP</h2>
+
+<p>Students Management</p>
+
+</div>
+
+</div>
+
+<!-- SEARCH -->
+
+<div class="search-wrap">
+
+<input
+type="text"
+class="search-box"
+placeholder="Search Student Name, Admission No">
+
+</div>
+
+<!-- OVERVIEW -->
+
+<div class="overview">
+
+<div class="overview-card">
+
+<h4>Total Students</h4>
+
+<h2>1250</h2>
+
+</div>
+
+<div class="overview-card">
+
+<h4>Present Today</h4>
+
+<h2>1180</h2>
+
+</div>
+
+<div class="overview-card">
+
+<h4>Absent Today</h4>
+
+<h2>70</h2>
+
+</div>
+
+<div class="overview-card">
+
+<h4>Admissions This Year</h4>
+
+<h2>165</h2>
+
+</div>
+
+</div>
+
+<!-- PRE PRIMARY -->
+
+<h2 class="section-title">
+Pre Primary
+</h2>
+
+<div class="class-list">
+
+<a href="class-students.html?class=Nursery"
+class="class-card">
+
+<div class="class-top">
+
+<div class="class-name">Nursery</div>
+
+<div class="class-count">45</div>
+
+</div>
+
+<div class="class-meta">
+
+Present: 42 • Absent: 3
+
+</div>
+
+</a>
+
+<a href="class-students.html?class=LKG"
+class="class-card">
+
+<div class="class-top">
+
+<div class="class-name">LKG</div>
+
+<div class="class-count">52</div>
+
+</div>
+
+<div class="class-meta">
+
+Present: 50 • Absent: 2
+
+</div>
+
+</a>
+
+<a href="class-students.html?class=UKG"
+class="class-card">
+
+<div class="class-top">
+
+<div class="class-name">UKG</div>
+
+<div class="class-count">48</div>
+
+</div>
+
+<div class="class-meta">
+
+Present: 47 • Absent: 1
+
+</div>
+
+</a>
+
+</div>
+
+<!-- SCHOOL -->
+
+<h2 class="section-title">
+School
+</h2>
+
+<div class="class-list">
+
+<a href="class-students.html?class=1st"
+class="class-card">
+<div class="class-top">
+<div class="class-name">1st Standard</div>
+<div class="class-count">52</div>
+</div>
+<div class="class-meta">Present: 49 • Absent: 3</div>
+</a>
+
+<a href="class-students.html?class=2nd"
+class="class-card">
+<div class="class-top">
+<div class="class-name">2nd Standard</div>
+<div class="class-count">50</div>
+</div>
+<div class="class-meta">Present: 48 • Absent: 2</div>
+</a>
+
+<a href="class-students.html?class=3rd"
+class="class-card">
+<div class="class-top">
+<div class="class-name">3rd Standard</div>
+<div class="class-count">51</div>
+</div>
+<div class="class-meta">Present: 50 • Absent: 1</div>
+</a>
+
+<a href="class-students.html?class=10th"
+class="class-card">
+<div class="class-top">
+<div class="class-name">10th Standard</div>
+<div class="class-count">58</div>
+</div>
+<div class="class-meta">Present: 56 • Absent: 2</div>
+</a>
+
+</div>
+
+<!-- PU -->
+
+<h2 class="section-title">
+PU College
+</h2>
+
+<div class="class-list">
+
+<a href="class-students.html?class=1PUCScience"
+class="class-card">
+
+<div class="class-top">
+
+<div class="class-name">1st PUC Science</div>
+
+<div class="class-count">120</div>
+
+</div>
+
+<div class="class-meta">
+
+PCMB • PCMC
+
+</div>
+
+</a>
+
+<a href="class-students.html?class=2PUCScience"
+class="class-card">
+
+<div class="class-top">
+
+<div class="class-name">2nd PUC Science</div>
+
+<div class="class-count">110</div>
+
+</div>
+
+<div class="class-meta">
+
+PCMB • PCMC
+
+</div>
+
+</a>
+
+<a href="class-students.html?class=1PUCCommerce"
+class="class-card">
+
+<div class="class-top">
+
+<div class="class-name">1st PUC Commerce</div>
+
+<div class="class-count">80</div>
+
+</div>
+
+<div class="class-meta">
+
+CEBA
+
+</div>
+
+</a>
+
+<a href="class-students.html?class=2PUCCommerce"
+class="class-card">
+
+<div class="class-top">
+
+<div class="class-name">2nd PUC Commerce</div>
+
+<div class="class-count">75</div>
+
+</div>
+
+<div class="class-meta">
+
+CEBA
+
+</div>
+
+</a>
+
+</div>
+
+<button class="add-btn">
++ Add Student
+</button>
+
+<!-- NAVIGATION -->
+
+<div class="bottom-nav">
+
+<a href="principal.html"
+class="nav-item">
+
+<span class="nav-icon">🏠</span>
+
+Home
+
+</a>
+
+<a href="people.html"
+class="nav-item active">
+
+<span class="nav-icon">👥</span>
+
+People
+
+</a>
+
+<a href="#"
+class="nav-item">
+
+<span class="nav-icon">📚</span>
+
+Academics
+
+</a>
+
+<a href="#"
+class="nav-item">
+
+<span class="nav-icon">💰</span>
+
+Finance
+
+</a>
+
+<a href="#"
+class="nav-item">
+
+<span class="nav-icon">☰</span>
+
+More
+
+</a>
+
+</div>
+
+</body>
+</html>
