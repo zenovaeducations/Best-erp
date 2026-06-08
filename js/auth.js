@@ -2,37 +2,56 @@ import { auth, db }
 from "./firebase-config.js";
 
 import {
- GoogleAuthProvider,
- signInWithRedirect,
- getRedirectResult
+GoogleAuthProvider,
+signInWithRedirect,
+getRedirectResult,
+onAuthStateChanged
 }
 from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+
 import {
-
 doc,
-
 getDoc
-
 }
 from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 const provider = new GoogleAuthProvider();
 
+/* LOGIN BUTTON */
+
 document
 .getElementById("googleLogin")
-.addEventListener("click", ()=>{
+.addEventListener("click", async () => {
 
-signInWithRedirect(auth, provider);
+await signInWithRedirect(auth, provider);
 
 });
 
-async function login(){
+/* AFTER REDIRECT */
 
-try{
+getRedirectResult(auth)
 
-const result = await signInWithRedirect(auth, provider) 
+.then((result)=>{
 
-const user = result.user;
+console.log("Redirect Success");
+
+})
+
+.catch((error)=>{
+
+console.error(error);
+
+alert(error.message);
+
+});
+
+/* CHECK LOGGED IN USER */
+
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user) return;
+
+console.log("UID:", user.uid);
 
 const userDoc =
 await getDoc(
@@ -41,58 +60,48 @@ doc(db,"users",user.uid)
 
 if(!userDoc.exists()){
 
-alert(
-"Access denied. Contact administrator."
-);
+alert("User not found in Firestore");
 
 return;
+
 }
 
 const role =
 userDoc.data().role;
 
-if(role=="principal"){
+if(role==="principal"){
 
 window.location.href =
 "principal.html";
 
 }
 
-else if(role=="teacher"){
+else if(role==="teacher"){
 
 window.location.href =
 "teacher.html";
 
 }
 
-else if(role=="parent"){
+else if(role==="parent"){
 
 window.location.href =
 "parent.html";
 
 }
 
-else if(role=="student"){
+else if(role==="student"){
 
 window.location.href =
 "student.html";
 
 }
 
-else if(role=="office"){
+else if(role==="office"){
 
 window.location.href =
 "office.html";
 
 }
 
-}
-catch(error){
-
-console.error(error);
-
-alert(error.message);
-
-}
-
-}
+});
