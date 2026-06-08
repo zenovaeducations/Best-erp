@@ -1,12 +1,12 @@
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>BEST ERP Login</title>
 
@@ -54,35 +54,40 @@ padding:30px;
 
 .logo-container{
 
-    text-align:center;
+text-align:center;
 
-    margin-bottom:15px;
+margin-bottom:15px;
 }
 
 .school-logo{
 
-    width:120px;
+width:120px;
 
-    height:120px;
+height:120px;
 
-    object-fit:contain;
-
-    display:block;
-
-    margin:auto;
+object-fit:contain;
 }
 
-.school-name{
+.erp-title{
+
+font-family:'Anton',sans-serif;
+
+font-size:52px;
+
+color:#5B21B6;
+
+text-align:center;
+}
+
+.erp-subtitle{
 
 text-align:center;
 
-margin-top:15px;
-
-font-size:15px;
-
 font-weight:600;
 
-line-height:1.6;
+line-height:1.8;
+
+margin-top:10px;
 }
 
 .roles{
@@ -108,9 +113,9 @@ background:#DC2626;
 
 color:white;
 
-font-size:16px;
-
 font-weight:700;
+
+font-size:16px;
 
 cursor:pointer;
 }
@@ -141,36 +146,34 @@ color:#777;
 
 <div class="logo-container">
 
-    <img src="logo.png"
-         alt="BEST Logo"
-         class="school-logo">
+<img src="assets/logo.png"
+class="school-logo">
 
 </div>
 
+<h1 class="erp-title">
+BEST ERP
+</h1>
 
-<div class="school-name">
+<p class="erp-subtitle">
 
 International English School<br>
-
 &<br>
-
 PU College
 
-</div>
+</p>
 
 <div class="roles">
 
 Student • Parent<br>
-
 Teacher • Office<br>
-
 Principal
 
 </div>
 
 <button
-class="google-btn"
-id="googleLogin">
+id="googleLogin"
+class="google-btn">
 
 CONTINUE WITH GOOGLE
 
@@ -183,8 +186,145 @@ Secure ERP Platform
 </div>
 
 </div>
-<script type="module"
-src="js/auth.js"></script>
-</body>
 
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+
+import {
+getAuth,
+GoogleAuthProvider,
+signInWithRedirect,
+getRedirectResult,
+onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+
+import {
+getFirestore,
+doc,
+getDoc
+}
+from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyAkuoUAAr7zEQICxlnimpz1XUFKJA3hPA8",
+
+authDomain: "best-f6d59.firebaseapp.com",
+
+projectId: "best-f6d59",
+
+storageBucket: "best-f6d59.firebasestorage.app",
+
+messagingSenderId: "422817936552",
+
+appId: "1:422817936552:web:6d8bfeb0efab2e6302fe9d",
+
+measurementId: "G-QVZZK9T59X"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+const provider = new GoogleAuthProvider();
+
+document
+.getElementById("googleLogin")
+.addEventListener("click", async()=>{
+
+await signInWithRedirect(auth, provider);
+
+});
+
+getRedirectResult(auth)
+.catch((error)=>{
+
+console.error(error);
+
+alert(error.message);
+
+});
+
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user) return;
+
+console.log("UID:", user.uid);
+
+try{
+
+const userRef =
+doc(db,"users",user.uid);
+
+const userDoc =
+await getDoc(userRef);
+
+if(!userDoc.exists()){
+
+alert(
+"User not found in Firestore"
+);
+
+return;
+
+}
+
+const role =
+userDoc.data().role;
+
+if(role==="principal"){
+
+window.location.href =
+"principal.html";
+
+}
+
+else if(role==="teacher"){
+
+window.location.href =
+"teacher.html";
+
+}
+
+else if(role==="parent"){
+
+window.location.href =
+"parent.html";
+
+}
+
+else if(role==="student"){
+
+window.location.href =
+"student.html";
+
+}
+
+else if(role==="office"){
+
+window.location.href =
+"office.html";
+
+}
+
+}
+catch(error){
+
+console.error(error);
+
+alert(error.message);
+
+}
+
+});
+
+</script>
+
+</body>
 </html>
