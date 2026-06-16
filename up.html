@@ -1,0 +1,453 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Fee Management</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#FAF8F5;
+padding:20px;
+}
+
+.header{
+
+background:white;
+
+padding:20px;
+
+border:2px solid #DC2626;
+
+box-shadow:5px 5px 0 #5B21B6;
+
+margin-bottom:20px;
+}
+
+.header h1{
+color:#5B21B6;
+}
+
+.card{
+
+background:white;
+
+padding:20px;
+
+border:2px solid #DC2626;
+
+box-shadow:5px 5px 0 #5B21B6;
+
+margin-bottom:20px;
+}
+
+.card h2{
+margin-bottom:15px;
+color:#5B21B6;
+}
+
+.detail{
+
+display:flex;
+
+justify-content:space-between;
+
+padding:10px 0;
+
+border-bottom:1px solid #eee;
+}
+
+input{
+
+width:100%;
+
+padding:14px;
+
+margin-bottom:12px;
+
+border:1px solid #ccc;
+}
+
+button{
+
+width:100%;
+
+padding:15px;
+
+background:#DC2626;
+
+color:white;
+
+border:none;
+
+font-weight:700;
+
+cursor:pointer;
+
+margin-top:10px;
+}
+
+.summary{
+
+background:#5B21B6;
+
+color:white;
+
+padding:20px;
+
+margin-top:15px;
+}
+
+.summary h3{
+
+margin-bottom:10px;
+}
+
+.summary p{
+
+margin-bottom:8px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>ZENOVA EDUCATIONS</h1>
+
+<p>Integrated with BEST PU College</p>
+
+</div>
+
+<div class="card">
+
+<h2>Student Details</h2>
+
+<div class="detail">
+
+<span>Registration ID</span>
+
+<b id="regId"></b>
+
+</div>
+
+<div class="detail">
+
+<span>Name</span>
+
+<b id="name"></b>
+
+</div>
+
+<div class="detail">
+
+<span>Class</span>
+
+<b id="class"></b>
+
+</div>
+
+<div class="detail">
+
+<span>Combination</span>
+
+<b id="combination"></b>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Fee Details</h2>
+
+<input
+type="number"
+id="totalFees"
+placeholder="Total Fees">
+
+<input
+type="number"
+id="advancePaid"
+placeholder="Advance Paid">
+
+<input
+type="number"
+id="emi1"
+placeholder="1st EMI">
+
+<input
+type="number"
+id="emi2"
+placeholder="2nd EMI">
+
+<input
+type="number"
+id="busFees"
+placeholder="Bus Fees">
+
+<div class="summary">
+
+<h3>Fee Summary</h3>
+
+<p>
+Total Paid :
+₹<span id="totalPaid">0</span>
+</p>
+
+<p>
+Pending Fees :
+₹<span id="pendingFees">0</span>
+</p>
+
+</div>
+
+<button onclick="saveFees()">
+
+Save Fee Details
+
+</button>
+
+<button onclick="window.print()">
+
+Download PDF
+
+</button>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+
+import {
+getFirestore,
+doc,
+getDoc,
+updateDoc
+}
+from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey:"AIzaSyAkuoUAAr7zEQICxlnimpz1XUFKJA3hPA8",
+
+authDomain:"best-f6d59.firebaseapp.com",
+
+projectId:"best-f6d59",
+
+storageBucket:"best-f6d59.firebasestorage.app",
+
+messagingSenderId:"422817936552",
+
+appId:"1:422817936552:web:6d8bfeb0efab2e6302fe9d"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+const studentId =
+params.get("id");
+
+const docRef =
+doc(
+db,
+"zenovaStudents",
+studentId
+);
+
+const snap =
+await getDoc(docRef);
+
+if(snap.exists()){
+
+const data =
+snap.data();
+
+document.getElementById("regId")
+.innerText =
+data.registrationId;
+
+document.getElementById("name")
+.innerText =
+data.name;
+
+document.getElementById("class")
+.innerText =
+data.class;
+
+document.getElementById("combination")
+.innerText =
+data.combination;
+
+document.getElementById("totalFees")
+.value =
+data.totalFees || 0;
+
+document.getElementById("advancePaid")
+.value =
+data.advancePaid || 0;
+
+document.getElementById("emi1")
+.value =
+data.emi1 || 0;
+
+document.getElementById("emi2")
+.value =
+data.emi2 || 0;
+
+document.getElementById("busFees")
+.value =
+data.busFees || 0;
+
+calculate();
+
+}
+
+function calculate(){
+
+const totalFees =
+Number(
+document.getElementById("totalFees").value
+);
+
+const advance =
+Number(
+document.getElementById("advancePaid").value
+);
+
+const emi1 =
+Number(
+document.getElementById("emi1").value
+);
+
+const emi2 =
+Number(
+document.getElementById("emi2").value
+);
+
+const bus =
+Number(
+document.getElementById("busFees").value
+);
+
+const totalPaid =
+advance +
+emi1 +
+emi2;
+
+const pending =
+totalFees -
+totalPaid +
+bus;
+
+document.getElementById("totalPaid")
+.innerText =
+totalPaid;
+
+document.getElementById("pendingFees")
+.innerText =
+pending;
+
+}
+
+document
+.querySelectorAll("input")
+.forEach(input=>{
+
+input.addEventListener(
+"input",
+calculate
+);
+
+});
+
+window.saveFees =
+async function(){
+
+const totalFees =
+Number(
+document.getElementById("totalFees").value
+);
+
+const advancePaid =
+Number(
+document.getElementById("advancePaid").value
+);
+
+const emi1 =
+Number(
+document.getElementById("emi1").value
+);
+
+const emi2 =
+Number(
+document.getElementById("emi2").value
+);
+
+const busFees =
+Number(
+document.getElementById("busFees").value
+);
+
+const totalPaid =
+advancePaid +
+emi1 +
+emi2;
+
+const pendingFees =
+totalFees -
+totalPaid +
+busFees;
+
+await updateDoc(
+docRef,
+{
+totalFees,
+advancePaid,
+emi1,
+emi2,
+busFees,
+totalPaid,
+pendingFees
+}
+);
+
+alert(
+"Fee Details Updated"
+);
+
+};
+
+</script>
+
+</body>
+</html>
