@@ -1,0 +1,447 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zenova Educations</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#FAF8F5;
+padding:20px;
+}
+
+.header{
+background:white;
+padding:20px;
+border:2px solid #DC2626;
+box-shadow:5px 5px 0 #5B21B6;
+margin-bottom:20px;
+}
+
+.header h1{
+color:#5B21B6;
+font-size:24px;
+}
+
+.header p{
+color:#666;
+margin-top:5px;
+}
+
+.stats{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-bottom:20px;
+}
+
+.stat-card{
+background:white;
+padding:15px;
+border:2px solid #DC2626;
+box-shadow:5px 5px 0 #5B21B6;
+}
+
+.stat-card h4{
+font-size:13px;
+color:#666;
+}
+
+.stat-card h2{
+color:#5B21B6;
+margin-top:5px;
+}
+
+.form-card{
+background:white;
+padding:20px;
+border:2px solid #DC2626;
+box-shadow:5px 5px 0 #5B21B6;
+margin-bottom:20px;
+}
+
+.form-card h2{
+margin-bottom:15px;
+color:#5B21B6;
+}
+
+input,select{
+width:100%;
+padding:14px;
+margin-bottom:12px;
+border:1px solid #ccc;
+}
+
+button{
+width:100%;
+padding:15px;
+background:#DC2626;
+color:white;
+border:none;
+font-weight:700;
+cursor:pointer;
+}
+
+.table-card{
+background:white;
+padding:20px;
+border:2px solid #DC2626;
+box-shadow:5px 5px 0 #5B21B6;
+}
+
+.table-wrap{
+overflow:auto;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th{
+background:#5B21B6;
+color:white;
+padding:12px;
+}
+
+td{
+padding:12px;
+border-bottom:1px solid #ddd;
+}
+
+.view-btn{
+background:#5B21B6;
+padding:8px 12px;
+color:white;
+text-decoration:none;
+font-size:12px;
+}
+
+.search{
+margin-bottom:15px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>ZENOVA EDUCATIONS</h1>
+
+<p>Integrated with BEST PU College</p>
+
+</div>
+
+<div class="stats">
+
+<div class="stat-card">
+<h4>Total Students</h4>
+<h2 id="totalStudents">0</h2>
+</div>
+
+<div class="stat-card">
+<h4>Total Collection</h4>
+<h2 id="totalCollection">₹0</h2>
+</div>
+
+<div class="stat-card">
+<h4>Pending Fees</h4>
+<h2 id="pendingFees">₹0</h2>
+</div>
+
+<div class="stat-card">
+<h4>Students With Balance</h4>
+<h2 id="studentsBalance">0</h2>
+</div>
+
+</div>
+
+<div class="form-card">
+
+<h2>Student Registration</h2>
+
+<input
+type="text"
+id="regId"
+placeholder="Registration ID">
+
+<input
+type="text"
+id="studentName"
+placeholder="Student Name">
+
+<input
+type="text"
+id="phone"
+placeholder="Phone Number">
+
+<select id="studentClass">
+
+<option value="">Select Class</option>
+
+<option>1st PUC</option>
+<option>2nd PUC</option>
+
+</select>
+
+<select id="combination">
+
+<option value="">Select Combination</option>
+
+<option>PCMB</option>
+<option>PCMC</option>
+<option>CEBA</option>
+
+</select>
+
+<button onclick="registerStudent()">
+
+Register Student
+
+</button>
+
+</div>
+
+<div class="table-card">
+
+<h2>Registered Students</h2>
+
+<input
+type="text"
+id="search"
+class="search"
+placeholder="Search Student">
+
+<div class="table-wrap">
+
+<table>
+<!-- REPLACE ONLY THE TABLE HEADER INSIDE fi.html -->
+
+<thead>
+
+<tr>
+
+<th>Reg ID</th>
+
+<th>Name</th>
+
+<th>Class</th>
+
+<th>Combination</th>
+
+<th>Phone</th>
+
+<th>Total Fees</th>
+
+<th>Total Paid</th>
+
+<th>Pending Fees</th>
+
+</tr>
+
+</thead>
+
+<tbody id="studentTable">
+
+</tbody>
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+
+import {
+getFirestore,
+doc,
+setDoc,
+collection,
+onSnapshot
+}
+from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyAkuoUAAr7zEQICxlnimpz1XUFKJA3hPA8",
+
+authDomain: "best-f6d59.firebaseapp.com",
+
+projectId: "best-f6d59",
+
+storageBucket: "best-f6d59.firebasestorage.app",
+
+messagingSenderId: "422817936552",
+
+appId: "1:422817936552:web:6d8bfeb0efab2e6302fe9d",
+
+measurementId: "G-QVZZK9T59X"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+window.registerStudent = async function(){
+
+const regId =
+document.getElementById("regId").value.trim();
+
+const name =
+document.getElementById("studentName").value.trim();
+
+const phone =
+document.getElementById("phone").value.trim();
+
+const studentClass =
+document.getElementById("studentClass").value;
+
+const combination =
+document.getElementById("combination").value;
+
+if(
+!regId ||
+!name ||
+!phone ||
+!studentClass ||
+!combination
+){
+alert("Fill all fields");
+return;
+}
+
+await setDoc(
+
+doc(db,"zenovaStudents",regId),
+
+{
+registrationId: regId,
+name: name,
+phone: phone,
+class: studentClass,
+combination: combination,
+
+totalFees:0,
+advancePaid:0,
+emi1:0,
+emi2:0,
+busFees:0,
+totalPaid:0,
+pendingFees:0,
+
+createdAt:new Date()
+}
+
+);
+
+alert("Student Registered");
+
+document.getElementById("regId").value="";
+document.getElementById("studentName").value="";
+document.getElementById("phone").value="";
+
+};
+
+
+onSnapshot(
+
+collection(db,"zenovaStudents"),
+
+(snapshot)=>{
+
+let html="";
+
+let totalStudents=0;
+
+let totalCollection=0;
+
+let totalPending=0;
+
+let balanceStudents=0;
+
+snapshot.forEach((docSnap)=>{
+
+const d = docSnap.data();
+
+const totalFees =
+Number(d.totalFees || 0);
+
+const totalPaid =
+Number(d.totalPaid || 0);
+
+const pendingFees =
+Number(d.pendingFees || 0);
+
+totalStudents++;
+
+totalCollection += totalPaid;
+
+totalPending += pendingFees;
+
+if(pendingFees>0){
+
+balanceStudents++;
+
+}
+
+html += `
+
+<tr>
+
+<td>${d.registrationId}</td>
+
+<td>${d.name}</td>
+
+<td>${d.class}</td>
+
+<td>${d.combination}</td>
+
+<td>${d.phone}</td>
+
+<td>₹${totalFees}</td>
+
+<td>₹${totalPaid}</td>
+
+<td>₹${pendingFees}</td>
+
+</tr>
+
+`;
+
+});
+
+document.getElementById("studentTable")
+.innerHTML = html;
+
+document.getElementById("totalStudents")
+.innerText = totalStudents;
+
+document.getElementById("totalCollection")
+.innerText = "₹" + totalCollection;
+
+document.getElementById("pendingFees")
+.innerText = "₹" + totalPending;
+
+document.getElementById("studentsBalance")
+.innerText = balanceStudents;
+
+}
+);
+
+
+</script>
+
+</body>
+</html>
