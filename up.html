@@ -2,13 +2,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Fee Management</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zenova Fee Management</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -27,206 +23,191 @@ padding:20px;
 }
 
 .header{
-
 background:white;
-
 padding:20px;
-
 border:2px solid #DC2626;
-
 box-shadow:5px 5px 0 #5B21B6;
-
 margin-bottom:20px;
 }
 
 .header h1{
 color:#5B21B6;
+font-size:24px;
 }
 
-.card{
+.header p{
+color:#666;
+margin-top:5px;
+}
 
-background:white;
-
-padding:20px;
-
-border:2px solid #DC2626;
-
-box-shadow:5px 5px 0 #5B21B6;
-
+.stats{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
 margin-bottom:20px;
 }
 
-.card h2{
-margin-bottom:15px;
+.stat-card{
+background:white;
+padding:15px;
+border:2px solid #DC2626;
+box-shadow:5px 5px 0 #5B21B6;
+}
+
+.stat-card h4{
+font-size:13px;
+color:#666;
+}
+
+.stat-card h2{
+margin-top:8px;
 color:#5B21B6;
 }
 
-.detail{
+.table-card{
+background:white;
+padding:20px;
+border:2px solid #DC2626;
+box-shadow:5px 5px 0 #5B21B6;
+}
 
-display:flex;
+.table-wrap{
+overflow:auto;
+}
 
-justify-content:space-between;
+table{
+width:100%;
+border-collapse:collapse;
+min-width:1600px;
+}
 
-padding:10px 0;
+th{
+background:#5B21B6;
+color:white;
+padding:12px;
+font-size:13px;
+}
 
-border-bottom:1px solid #eee;
+td{
+padding:10px;
+border-bottom:1px solid #ddd;
+text-align:center;
 }
 
 input{
-
-width:100%;
-
-padding:14px;
-
-margin-bottom:12px;
-
+width:100px;
+padding:8px;
 border:1px solid #ccc;
 }
 
-button{
-
-width:100%;
-
-padding:15px;
-
+.save-btn{
 background:#DC2626;
-
 color:white;
-
 border:none;
-
-font-weight:700;
-
+padding:10px 15px;
 cursor:pointer;
-
-margin-top:10px;
+font-weight:600;
 }
 
-.summary{
-
-background:#5B21B6;
-
-color:white;
-
-padding:20px;
-
+.download-btn{
 margin-top:15px;
+background:#5B21B6;
+color:white;
+border:none;
+padding:15px;
+width:100%;
+cursor:pointer;
+font-weight:700;
 }
 
-.summary h3{
-
-margin-bottom:10px;
-}
-
-.summary p{
-
-margin-bottom:8px;
+.search{
+width:100%;
+padding:14px;
+margin-bottom:15px;
+border:2px solid #DC2626;
 }
 
 </style>
-
 </head>
 
 <body>
 
 <div class="header">
-
 <h1>ZENOVA EDUCATIONS</h1>
-
 <p>Integrated with BEST PU College</p>
-
 </div>
 
-<div class="card">
+<div class="stats">
 
-<h2>Student Details</h2>
-
-<div class="detail">
-
-<span>Registration ID</span>
-
-<b id="regId"></b>
-
+<div class="stat-card">
+<h4>Total Students</h4>
+<h2 id="totalStudents">0</h2>
 </div>
 
-<div class="detail">
-
-<span>Name</span>
-
-<b id="name"></b>
-
+<div class="stat-card">
+<h4>Total Collection</h4>
+<h2 id="totalCollection">₹0</h2>
 </div>
 
-<div class="detail">
-
-<span>Class</span>
-
-<b id="class"></b>
-
+<div class="stat-card">
+<h4>Total Pending</h4>
+<h2 id="totalPending">₹0</h2>
 </div>
 
-<div class="detail">
-
-<span>Combination</span>
-
-<b id="combination"></b>
-
+<div class="stat-card">
+<h4>Students With Balance</h4>
+<h2 id="balanceStudents">0</h2>
 </div>
 
 </div>
 
-<div class="card">
-
-<h2>Fee Details</h2>
+<div class="table-card">
 
 <input
-type="number"
-id="totalFees"
-placeholder="Total Fees">
+type="text"
+id="search"
+class="search"
+placeholder="Search Student">
 
-<input
-type="number"
-id="advancePaid"
-placeholder="Advance Paid">
+<div class="table-wrap">
 
-<input
-type="number"
-id="emi1"
-placeholder="1st EMI">
+<table>
 
-<input
-type="number"
-id="emi2"
-placeholder="2nd EMI">
+<thead>
 
-<input
-type="number"
-id="busFees"
-placeholder="Bus Fees">
+<tr>
 
-<div class="summary">
+<th>Reg ID</th>
+<th>Name</th>
+<th>Class</th>
+<th>Combination</th>
 
-<h3>Fee Summary</h3>
+<th>Total Fees</th>
+<th>Advance</th>
+<th>1st EMI</th>
+<th>2nd EMI</th>
+<th>Bus Fees</th>
 
-<p>
-Total Paid :
-₹<span id="totalPaid">0</span>
-</p>
+<th>Total Paid</th>
+<th>Pending</th>
 
-<p>
-Pending Fees :
-₹<span id="pendingFees">0</span>
-</p>
+<th>Save</th>
+
+</tr>
+
+</thead>
+
+<tbody id="studentTable">
+
+</tbody>
+
+</table>
 
 </div>
 
-<button onclick="saveFees()">
-
-Save Fee Details
-
-</button>
-
-<button onclick="window.print()">
+<button
+class="download-btn"
+onclick="window.print()">
 
 Download PDF
 
@@ -241,211 +222,227 @@ from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
 
 import {
 getFirestore,
+collection,
+onSnapshot,
 doc,
-getDoc,
 updateDoc
 }
 from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 const firebaseConfig = {
 
-apiKey:"AIzaSyAkuoUAAr7zEQICxlnimpz1XUFKJA3hPA8",
+apiKey: "AIzaSyAkuoUAAr7zEQICxlnimpz1XUFKJA3hPA8",
 
-authDomain:"best-f6d59.firebaseapp.com",
+authDomain: "best-f6d59.firebaseapp.com",
 
-projectId:"best-f6d59",
+projectId: "best-f6d59",
 
-storageBucket:"best-f6d59.firebasestorage.app",
+storageBucket: "best-f6d59.firebasestorage.app",
 
-messagingSenderId:"422817936552",
+messagingSenderId: "422817936552",
 
-appId:"1:422817936552:web:6d8bfeb0efab2e6302fe9d"
+appId: "1:422817936552:web:6d8bfeb0efab2e6302fe9d",
+
+measurementId: "G-QVZZK9T59X"
 
 };
 
-const app =
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-const db =
-getFirestore(app);
+const db = getFirestore(app);
 
-const params =
-new URLSearchParams(
-window.location.search
-);
+const table =
+document.getElementById("studentTable");
 
-const studentId =
-params.get("id");
-
-const docRef =
-doc(
-db,
-"zenovaStudents",
-studentId
-);
-
-const snap =
-await getDoc(docRef);
-
-if(snap.exists()){
-
-const data =
-snap.data();
-
-document.getElementById("regId")
-.innerText =
-data.registrationId;
-
-document.getElementById("name")
-.innerText =
-data.name;
-
-document.getElementById("class")
-.innerText =
-data.class;
-
-document.getElementById("combination")
-.innerText =
-data.combination;
-
-document.getElementById("totalFees")
-.value =
-data.totalFees || 0;
-
-document.getElementById("advancePaid")
-.value =
-data.advancePaid || 0;
-
-document.getElementById("emi1")
-.value =
-data.emi1 || 0;
-
-document.getElementById("emi2")
-.value =
-data.emi2 || 0;
-
-document.getElementById("busFees")
-.value =
-data.busFees || 0;
-
-calculate();
-
-}
-
-function calculate(){
+function calculate(id){
 
 const totalFees =
-Number(
-document.getElementById("totalFees").value
-);
+Number(document.getElementById(`totalFees-${id}`).value||0);
 
 const advance =
-Number(
-document.getElementById("advancePaid").value
-);
+Number(document.getElementById(`advance-${id}`).value||0);
 
 const emi1 =
-Number(
-document.getElementById("emi1").value
-);
+Number(document.getElementById(`emi1-${id}`).value||0);
 
 const emi2 =
-Number(
-document.getElementById("emi2").value
-);
+Number(document.getElementById(`emi2-${id}`).value||0);
 
 const bus =
-Number(
-document.getElementById("busFees").value
-);
+Number(document.getElementById(`bus-${id}`).value||0);
 
 const totalPaid =
-advance +
-emi1 +
-emi2;
+advance + emi1 + emi2;
 
 const pending =
-totalFees -
-totalPaid +
-bus;
+totalFees - totalPaid + bus;
 
-document.getElementById("totalPaid")
-.innerText =
+document.getElementById(`paid-${id}`).innerText =
 totalPaid;
 
-document.getElementById("pendingFees")
-.innerText =
+document.getElementById(`pending-${id}`).innerText =
 pending;
 
 }
 
-document
-.querySelectorAll("input")
-.forEach(input=>{
-
-input.addEventListener(
-"input",
-calculate
-);
-
-});
-
-window.saveFees =
-async function(){
+window.saveRow = async function(id){
 
 const totalFees =
-Number(
-document.getElementById("totalFees").value
-);
+Number(document.getElementById(`totalFees-${id}`).value||0);
 
-const advancePaid =
-Number(
-document.getElementById("advancePaid").value
-);
+const advance =
+Number(document.getElementById(`advance-${id}`).value||0);
 
 const emi1 =
-Number(
-document.getElementById("emi1").value
-);
+Number(document.getElementById(`emi1-${id}`).value||0);
 
 const emi2 =
-Number(
-document.getElementById("emi2").value
-);
+Number(document.getElementById(`emi2-${id}`).value||0);
 
-const busFees =
-Number(
-document.getElementById("busFees").value
-);
+const bus =
+Number(document.getElementById(`bus-${id}`).value||0);
 
 const totalPaid =
-advancePaid +
-emi1 +
-emi2;
+advance + emi1 + emi2;
 
-const pendingFees =
-totalFees -
-totalPaid +
-busFees;
+const pending =
+totalFees - totalPaid + bus;
 
 await updateDoc(
-docRef,
+doc(db,"zenovaStudents",id),
 {
 totalFees,
-advancePaid,
+advancePaid:advance,
 emi1,
 emi2,
-busFees,
+busFees:bus,
 totalPaid,
-pendingFees
+pendingFees:pending
 }
 );
 
-alert(
-"Fee Details Updated"
-);
+alert("Saved Successfully");
 
 };
+
+onSnapshot(
+collection(db,"zenovaStudents"),
+(snapshot)=>{
+
+let html="";
+
+let totalStudents=0;
+let totalCollection=0;
+let totalPending=0;
+let balanceStudents=0;
+
+snapshot.forEach((docSnap)=>{
+
+const d = docSnap.data();
+
+totalStudents++;
+
+totalCollection += Number(d.totalPaid||0);
+
+totalPending += Number(d.pendingFees||0);
+
+if((d.pendingFees||0)>0){
+balanceStudents++;
+}
+
+html += `
+
+<tr>
+
+<td>${d.registrationId}</td>
+
+<td>${d.name}</td>
+
+<td>${d.class}</td>
+
+<td>${d.combination}</td>
+
+<td>
+<input
+type="number"
+id="totalFees-${docSnap.id}"
+value="${d.totalFees||0}"
+oninput="calculate('${docSnap.id}')">
+</td>
+
+<td>
+<input
+type="number"
+id="advance-${docSnap.id}"
+value="${d.advancePaid||0}"
+oninput="calculate('${docSnap.id}')">
+</td>
+
+<td>
+<input
+type="number"
+id="emi1-${docSnap.id}"
+value="${d.emi1||0}"
+oninput="calculate('${docSnap.id}')">
+</td>
+
+<td>
+<input
+type="number"
+id="emi2-${docSnap.id}"
+value="${d.emi2||0}"
+oninput="calculate('${docSnap.id}')">
+</td>
+
+<td>
+<input
+type="number"
+id="bus-${docSnap.id}"
+value="${d.busFees||0}"
+oninput="calculate('${docSnap.id}')">
+</td>
+
+<td id="paid-${docSnap.id}">
+${d.totalPaid||0}
+</td>
+
+<td id="pending-${docSnap.id}">
+${d.pendingFees||0}
+</td>
+
+<td>
+
+<button
+class="save-btn"
+onclick="saveRow('${docSnap.id}')">
+
+Save
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+table.innerHTML = html;
+
+document.getElementById("totalStudents").innerText =
+totalStudents;
+
+document.getElementById("totalCollection").innerText =
+"₹"+totalCollection;
+
+document.getElementById("totalPending").innerText =
+"₹"+totalPending;
+
+document.getElementById("balanceStudents").innerText =
+balanceStudents;
+
+});
 
 </script>
 
