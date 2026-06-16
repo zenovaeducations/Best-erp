@@ -229,6 +229,7 @@ placeholder="Search Student">
 <div class="table-wrap">
 
 <table>
+<!-- REPLACE ONLY THE TABLE HEADER INSIDE fi.html -->
 
 <thead>
 
@@ -244,9 +245,11 @@ placeholder="Search Student">
 
 <th>Phone</th>
 
-<th>Pending</th>
+<th>Total Fees</th>
 
-<th>View</th>
+<th>Total Paid</th>
+
+<th>Pending Fees</th>
 
 </tr>
 
@@ -255,13 +258,6 @@ placeholder="Search Student">
 <tbody id="studentTable">
 
 </tbody>
-
-</table>
-
-</div>
-
-</div>
-
 <script type="module">
 
 import { initializeApp }
@@ -358,6 +354,7 @@ document.getElementById("phone").value="";
 
 };
 
+
 onSnapshot(
 
 collection(db,"zenovaStudents"),
@@ -367,22 +364,36 @@ collection(db,"zenovaStudents"),
 let html="";
 
 let totalStudents=0;
+
 let totalCollection=0;
-let pending=0;
-let balanceCount=0;
+
+let totalPending=0;
+
+let balanceStudents=0;
 
 snapshot.forEach((docSnap)=>{
 
-const d=docSnap.data();
+const d = docSnap.data();
+
+const totalFees =
+Number(d.totalFees || 0);
+
+const totalPaid =
+Number(d.totalPaid || 0);
+
+const pendingFees =
+Number(d.pendingFees || 0);
 
 totalStudents++;
 
-totalCollection += Number(d.totalPaid||0);
+totalCollection += totalPaid;
 
-pending += Number(d.pendingFees||0);
+totalPending += pendingFees;
 
-if((d.pendingFees||0)>0){
-balanceCount++;
+if(pendingFees>0){
+
+balanceStudents++;
+
 }
 
 html += `
@@ -399,19 +410,11 @@ html += `
 
 <td>${d.phone}</td>
 
-<td>₹${d.pendingFees||0}</td>
+<td>₹${totalFees}</td>
 
-<td>
+<td>₹${totalPaid}</td>
 
-<a
-class="view-btn"
-href="up.html?id=${d.registrationId}">
-
-View
-
-</a>
-
-</td>
+<td>₹${pendingFees}</td>
 
 </tr>
 
@@ -420,23 +423,23 @@ View
 });
 
 document.getElementById("studentTable")
-.innerHTML=html;
+.innerHTML = html;
 
 document.getElementById("totalStudents")
-.innerText=totalStudents;
+.innerText = totalStudents;
 
 document.getElementById("totalCollection")
-.innerText="₹"+totalCollection;
+.innerText = "₹" + totalCollection;
 
 document.getElementById("pendingFees")
-.innerText="₹"+pending;
+.innerText = "₹" + totalPending;
 
 document.getElementById("studentsBalance")
-.innerText=balanceCount;
+.innerText = balanceStudents;
 
 }
-
 );
+
 
 </script>
 
