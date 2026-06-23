@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zenova Educations - Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0f172a,#1e3a8a,#2563eb);
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px;
+}
+
+.container{
+width:100%;
+max-width:430px;
+background:#fff;
+border-radius:25px;
+padding:35px 25px;
+box-shadow:0 15px 40px rgba(0,0,0,0.25);
+text-align:center;
+}
+
+.logo{
+width:90px;
+height:90px;
+margin:auto;
+border-radius:50%;
+background:linear-gradient(135deg,#2563eb,#1d4ed8);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:34px;
+font-weight:700;
+color:white;
+margin-bottom:20px;
+}
+
+h1{
+font-size:28px;
+color:#0f172a;
+margin-bottom:5px;
+}
+
+.subtitle{
+font-size:14px;
+color:#64748b;
+margin-bottom:25px;
+}
+
+.program-box{
+background:#eff6ff;
+padding:15px;
+border-radius:15px;
+margin-bottom:25px;
+}
+
+.program-title{
+font-size:18px;
+font-weight:600;
+color:#1d4ed8;
+margin-bottom:5px;
+}
+
+.program-desc{
+font-size:13px;
+color:#475569;
+}
+
+.google-btn{
+width:100%;
+border:none;
+padding:14px;
+border-radius:12px;
+background:#2563eb;
+color:white;
+font-size:16px;
+font-weight:600;
+cursor:pointer;
+transition:0.3s;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+}
+
+.google-btn:hover{
+background:#1d4ed8;
+}
+
+.google-btn img{
+width:22px;
+height:22px;
+background:white;
+padding:2px;
+border-radius:50%;
+}
+
+.loading{
+display:none;
+margin-top:20px;
+font-size:14px;
+color:#2563eb;
+font-weight:600;
+}
+
+.footer{
+margin-top:25px;
+font-size:12px;
+color:#64748b;
+}
+
+@media(max-width:480px){
+.container{
+padding:30px 20px;
+}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="logo">Z</div>
+
+<h1>Zenova Educations</h1>
+<p class="subtitle">AI & Web Skills Development Program</p>
+
+<div class="program-box">
+<div class="program-title">
+Student & Teacher Portal
+</div>
+<div class="program-desc">
+Login using your Google Account to continue.
+</div>
+</div>
+
+<button class="google-btn" onclick="googleLogin()">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg">
+Continue with Google
+</button>
+
+<div class="loading" id="loading">
+Please wait...
+</div>
+
+<div class="footer">
+Powered by Zenova Educations
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getAuth,
+GoogleAuthProvider,
+signInWithPopup
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+getFirestore,
+doc,
+setDoc,
+serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyAkuoUAAr7zEQICxlnimpz1XUFKJA3hPA8",
+authDomain: "best-f6d59.firebaseapp.com",
+projectId: "best-f6d59",
+storageBucket: "best-f6d59.firebasestorage.app",
+messagingSenderId: "422817936552",
+appId: "1:422817936552:web:6d8bfeb0efab2e6302fe9d",
+measurementId: "G-QVZZK9T59X"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window.googleLogin = async () => {
+
+try{
+
+document.getElementById("loading").style.display="block";
+
+const provider = new GoogleAuthProvider();
+
+const result = await signInWithPopup(auth, provider);
+
+const user = result.user;
+
+const userData = {
+uid:user.uid,
+name:user.displayName || "",
+email:user.email || "",
+photo:user.photoURL || "",
+lastLogin:serverTimestamp()
+};
+
+if(user.email === "zenovaeducations@gmail.com"){
+
+await setDoc(
+doc(db,"teachers",user.uid),
+userData,
+{merge:true}
+);
+
+localStorage.setItem("role","teacher");
+
+window.location.href="teacher.html";
+
+}else{
+
+await setDoc(
+doc(db,"students",user.uid),
+userData,
+{merge:true}
+);
+
+localStorage.setItem("role","student");
+
+window.location.href="student.html";
+
+}
+
+}catch(error){
+
+console.error(error);
+alert(error.message);
+
+document.getElementById("loading").style.display="none";
+
+}
+
+};
+
+</script>
+
+</body>
+</html>
