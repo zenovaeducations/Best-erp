@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Zenova Educations - Student Portal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f1f5f9;
+padding-bottom:90px;
+}
+
+.header{
+background:linear-gradient(135deg,#2563eb,#1d4ed8);
+padding:25px;
+color:white;
+border-radius:0 0 25px 25px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+.welcome{
+display:flex;
+align-items:center;
+justify-content:space-between;
+}
+
+.user-info{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.user-photo{
+width:60px;
+height:60px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid white;
+background:white;
+}
+
+.user-name{
+font-size:20px;
+font-weight:600;
+}
+
+.day-box{
+margin-top:20px;
+background:rgba(255,255,255,0.15);
+padding:15px;
+border-radius:15px;
+backdrop-filter:blur(10px);
+}
+
+.day-number{
+font-size:26px;
+font-weight:700;
+}
+
+.day-date{
+font-size:14px;
+opacity:.9;
+margin-top:4px;
+}
+
+.container{
+padding:15px;
+}
+
+.card{
+background:white;
+border-radius:20px;
+padding:18px;
+margin-bottom:15px;
+box-shadow:0 3px 15px rgba(0,0,0,.06);
+}
+
+.card-title{
+font-size:18px;
+font-weight:600;
+margin-bottom:15px;
+color:#1e293b;
+}
+
+.stat-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+.stat-card{
+background:#eff6ff;
+padding:15px;
+border-radius:15px;
+text-align:center;
+}
+
+.stat-value{
+font-size:24px;
+font-weight:700;
+color:#2563eb;
+}
+
+.stat-label{
+font-size:13px;
+color:#64748b;
+margin-top:4px;
+}
+
+.session-card{
+background:white;
+padding:15px;
+border-radius:15px;
+margin-bottom:12px;
+border-left:5px solid #2563eb;
+box-shadow:0 3px 10px rgba(0,0,0,.05);
+}
+
+.session-title{
+font-size:17px;
+font-weight:600;
+color:#0f172a;
+}
+
+.session-desc{
+font-size:13px;
+color:#64748b;
+margin-top:6px;
+}
+
+.session-time{
+margin-top:10px;
+font-size:13px;
+font-weight:500;
+color:#2563eb;
+}
+
+.countdown{
+margin-top:10px;
+font-size:14px;
+font-weight:600;
+color:#dc2626;
+}
+
+.join-btn{
+width:100%;
+margin-top:12px;
+padding:12px;
+border:none;
+border-radius:12px;
+background:#2563eb;
+color:white;
+font-size:15px;
+font-weight:600;
+cursor:pointer;
+}
+
+.join-btn:hover{
+background:#1d4ed8;
+}
+
+.active-session{
+background:#dcfce7;
+border-left:5px solid #16a34a;
+}
+
+.status{
+display:inline-block;
+padding:8px 14px;
+border-radius:30px;
+font-size:13px;
+font-weight:600;
+margin-top:10px;
+}
+
+.status-sharing{
+background:#dcfce7;
+color:#166534;
+}
+
+.status-not-sharing{
+background:#fee2e2;
+color:#991b1b;
+}
+
+.profile-form{
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.input{
+width:100%;
+padding:12px;
+border:1px solid #cbd5e1;
+border-radius:12px;
+outline:none;
+}
+
+.save-btn{
+padding:12px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:12px;
+font-weight:600;
+cursor:pointer;
+}
+
+.upload-btn{
+background:#f8fafc;
+padding:10px;
+border:2px dashed #2563eb;
+border-radius:12px;
+cursor:pointer;
+}
+
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:70px;
+background:white;
+display:flex;
+justify-content:space-around;
+align-items:center;
+box-shadow:0 -5px 20px rgba(0,0,0,.08);
+z-index:1000;
+}
+
+.nav-btn{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:4px;
+font-size:12px;
+cursor:pointer;
+color:#64748b;
+font-weight:500;
+}
+
+.nav-btn.active{
+color:#2563eb;
+}
+
+.page{
+display:none;
+}
+
+.page.active{
+display:block;
+}
+
+.loading{
+text-align:center;
+padding:30px;
+font-weight:600;
+color:#2563eb;
+}
+
+.no-session{
+text-align:center;
+padding:20px;
+color:#64748b;
+}
+
+@media(max-width:500px){
+
+.user-name{
+font-size:17px;
+}
+
+.day-number{
+font-size:22px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="homePage" class="page active">
+
+<div class="header">
+
+<div class="welcome">
+
+<div class="user-info">
+<img id="studentPhoto"
+class="user-photo"
+src="https://ui-avatars.com/api/?name=Student">
+
+<div>
+<div class="user-name" id="studentName">
+Loading...
+</div>
+
+<div style="font-size:13px;">
+Zenova Student Portal
+</div>
+</div>
+
+</div>
+
+</div>
+
+<div class="day-box">
+
+<div class="day-number" id="programDay">
+Day 1
+</div>
+
+<div class="day-date" id="todayDate">
+Loading Date...
+</div>
+
+</div>
+
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<div class="card-title">
+Dashboard
+</div>
+
+<div class="stat-grid">
+
+<div class="stat-card">
+<div class="stat-value" id="totalSessions">
+0
+</div>
+<div class="stat-label">
+Total Sessions
+</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-value" id="attendancePercent">
+0%
+</div>
+<div class="stat-label">
+Attendance
+</div>
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+Current Session Status
+</div>
+
+<div id="currentSessionArea">
+
+<div class="status status-not-sharing">
+Not Sharing Screen
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Sessions Page -->
+
+<div id="sessionsPage" class="page">
+
+<div class="header">
+
+<h2>Sessions</h2>
+
+<p style="margin-top:5px;">
+Upcoming & Live Classes
+</p>
+
+</div>
+
+<div class="container">
+
+<div id="sessionsContainer">
+
+<div class="loading">
+Loading Sessions...
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Profile Page -->
+
+<div id="profilePage" class="page">
+
+<div class="header">
+
+<h2>My Profile</h2>
+
+<p style="margin-top:5px;">
+Manage Student Details
+</p>
+
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<center>
+
+<img id="profilePreview"
+src="https://ui-avatars.com/api/?name=Student"
+style="
+width:120px;
+height:120px;
+border-radius:50%;
+object-fit:cover;
+margin-bottom:15px;
+">
+
+</center>
+
+<div class="profile-form">
+
+<input
+type="text"
+id="profileName"
+class="input"
+placeholder="Student Name">
+
+<input
+type="text"
+id="registerNumber"
+class="input"
+placeholder="Register Number">
+
+<input
+type="tel"
+id="mobileNumber"
+class="input"
+placeholder="Mobile Number">
+
+<input
+type="file"
+id="profilePhotoInput"
+accept="image/*"
+class="upload-btn">
+
+<button
+class="save-btn"
+id="saveProfileBtn">
+Save Profile
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Bottom Navigation -->
+
+<div class="bottom-nav">
+
+<div class="nav-btn active"
+onclick="showPage('homePage',this)">
+🏠
+<span>Home</span>
+</div>
+
+<div class="nav-btn"
+onclick="showPage('sessionsPage',this)">
+📚
+<span>Sessions</span>
+</div>
+
+<div class="nav-btn"
+onclick="showPage('profilePage',this)">
+👤
+<span>Profile</span>
+</div>
+
+</div>
+
+<!-- Session Join Modal -->
+
+<div id="joinModal"
+style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.5);
+justify-content:center;
+align-items:center;
+z-index:9999;
+">
+
+<div style="
+background:white;
+width:90%;
+max-width:420px;
+padding:25px;
+border-radius:20px;
+">
+
+<h3 id="modalSessionTitle">
+Session
+</h3>
+
+<p style="margin-top:10px;color:#64748b;">
+Screen sharing permission is required to join the session.
+</p>
+
+<button
+id="startSharingBtn"
+style="
+width:100%;
+margin-top:20px;
+padding:12px;
+border:none;
+border-radius:12px;
+background:#16a34a;
+color:white;
+font-weight:600;
+cursor:pointer;
+">
+Start Screen Sharing
+</button>
+
+<button
+onclick="closeJoinModal()"
+style="
+width:100%;
+margin-top:10px;
+padding:12px;
+border:none;
+border-radius:12px;
+background:#ef4444;
+color:white;
+font-weight:600;
+cursor:pointer;
+">
+Cancel
+</button>
+
+</div>
+
+</div>
+
+<!-- PART 2 STARTS FROM HERE -->
+
+<script type="module">
+    
+    
+import {
+auth,
+db,
+storage,
+
+onAuthStateChanged,
+
+doc,
+getDoc,
+setDoc,
+updateDoc,
+
+collection,
+getDocs,
+query,
+orderBy,
+onSnapshot,
+
+serverTimestamp,
+
+ref,
+uploadBytes,
+getDownloadURL
+
+} from "./firebase.js";
+
+let currentUser = null;
+let currentSession = null;
+let screenStream = null;
+let selectedSessionId = null;
+
+const studentName = document.getElementById("studentName");
+const studentPhoto = document.getElementById("studentPhoto");
+const profilePreview = document.getElementById("profilePreview");
+
+const profileName = document.getElementById("profileName");
+const registerNumber = document.getElementById("registerNumber");
+const mobileNumber = document.getElementById("mobileNumber");
+
+const sessionsContainer =
+document.getElementById("sessionsContainer");
+
+const totalSessions =
+document.getElementById("totalSessions");
+
+const attendancePercent =
+document.getElementById("attendancePercent");
+
+const currentSessionArea =
+document.getElementById("currentSessionArea");
+
+const todayDate =
+document.getElementById("todayDate");
+
+const programDay =
+document.getElementById("programDay");
+
+const saveProfileBtn =
+document.getElementById("saveProfileBtn");
+
+const profilePhotoInput =
+document.getElementById("profilePhotoInput");
+
+function formatDateToday(){
+
+const now = new Date();
+
+todayDate.innerHTML =
+now.toLocaleDateString("en-IN",{
+weekday:"long",
+year:"numeric",
+month:"long",
+day:"numeric"
+});
+
+}
+
+formatDateToday();
+
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user){
+window.location.href="index.html";
+return;
+}
+
+currentUser = user;
+
+await loadStudentProfile();
+await loadProgramSettings();
+loadSessionsRealtime();
+loadAttendance();
+
+});
+
+async function loadStudentProfile(){
+
+const snap = await getDoc(
+doc(db,"students",currentUser.uid)
+);
+
+if(snap.exists()){
+
+const data = snap.data();
+
+studentName.innerHTML =
+data.name || currentUser.displayName;
+
+profileName.value =
+data.name || "";
+
+registerNumber.value =
+data.registerNumber || "";
+
+mobileNumber.value =
+data.mobileNumber || "";
+
+if(data.photo){
+
+studentPhoto.src = data.photo;
+profilePreview.src = data.photo;
+
+}else{
+
+studentPhoto.src =
+currentUser.photoURL;
+
+profilePreview.src =
+currentUser.photoURL;
+
+}
+
+}else{
+
+studentName.innerHTML =
+currentUser.displayName;
+
+profileName.value =
+currentUser.displayName;
+
+}
+
+}
+
+async function loadProgramSettings(){
+
+const settingsRef =
+await getDoc(
+doc(db,"settings","program")
+);
+
+if(!settingsRef.exists()) return;
+
+const settings =
+settingsRef.data();
+
+if(!settings.programStartDate) return;
+
+const startDate =
+new Date(settings.programStartDate);
+
+const today =
+new Date();
+
+const diff =
+today.getTime() -
+startDate.getTime();
+
+const dayNumber =
+Math.floor(
+diff/(1000*60*60*24)
+)+1;
+
+programDay.innerHTML =
+"Day " + dayNumber;
+
+}
+
+function loadSessionsRealtime(){
+
+const q =
+query(
+collection(db,"sessions"),
+orderBy("sessionDate","asc")
+);
+
+onSnapshot(q,(snapshot)=>{
+
+let html = "";
+
+let count = 0;
+
+snapshot.forEach((docSnap)=>{
+
+count++;
+
+const session =
+docSnap.data();
+
+html += `
+
+<div class="session-card">
+
+<div class="session-title">
+${session.title}
+</div>
+
+<div class="session-desc">
+${session.description || ""}
+</div>
+
+<div class="session-time">
+📅 ${session.sessionDate}
+<br>
+🕒 ${session.startTime}
+-
+${session.endTime}
+</div>
+
+<div
+class="countdown"
+id="countdown-${docSnap.id}">
+Loading...
+</div>
+
+<button
+class="join-btn"
+onclick="joinSession('${docSnap.id}','${session.title}')">
+Join Session
+</button>
+
+</div>
+
+`;
+
+startCountdown(
+docSnap.id,
+session.sessionDate,
+session.startTime
+);
+
+});
+
+if(count===0){
+
+html = `
+<div class="no-session">
+No Sessions Available
+</div>
+`;
+
+}
+
+sessionsContainer.innerHTML = html;
+
+totalSessions.innerHTML = count;
+
+});
+
+}
+
+function startCountdown(
+id,
+sessionDate,
+sessionTime
+){
+
+setInterval(()=>{
+
+const target =
+new Date(
+sessionDate+" "+sessionTime
+);
+
+const now =
+new Date();
+
+const diff =
+target - now;
+
+const element =
+document.getElementById(
+"countdown-"+id
+);
+
+if(!element) return;
+
+if(diff<=0){
+
+element.innerHTML =
+"🟢 Session Live";
+
+return;
+}
+
+const days =
+Math.floor(
+diff/(1000*60*60*24)
+);
+
+const hours =
+Math.floor(
+(diff%(1000*60*60*24))
+/
+(1000*60*60)
+);
+
+const mins =
+Math.floor(
+(diff%(1000*60*60))
+/
+(1000*60)
+);
+
+element.innerHTML =
+`${days}d ${hours}h ${mins}m remaining`;
+
+},1000);
+
+}
+
+async function loadAttendance(){
+
+const attendanceSnapshot =
+await getDocs(
+collection(db,"attendance")
+);
+
+let total = 0;
+let present = 0;
+
+attendanceSnapshot.forEach((docSnap)=>{
+
+const row = docSnap.data();
+
+if(
+row.studentId === currentUser.uid
+){
+
+total++;
+
+if(row.present)
+present++;
+
+}
+
+});
+
+if(total===0){
+
+attendancePercent.innerHTML =
+"0%";
+
+return;
+
+}
+
+const percent =
+Math.round(
+(present/total)*100
+);
+
+attendancePercent.innerHTML =
+percent+"%";
+
+}
+
+window.showPage = function(pageId,element){
+
+document
+.querySelectorAll(".page")
+.forEach(page=>{
+
+page.classList.remove("active");
+
+});
+
+document
+.getElementById(pageId)
+.classList.add("active");
+
+document
+.querySelectorAll(".nav-btn")
+.forEach(btn=>{
+
+btn.classList.remove("active");
+
+});
+
+element.classList.add("active");
+
+};
+
+window.joinSession = function(
+sessionId,
+sessionTitle
+){
+
+selectedSessionId = sessionId;
+
+document.getElementById(
+"modalSessionTitle"
+).innerHTML = sessionTitle;
+
+document.getElementById(
+"joinModal"
+).style.display = "flex";
+
+};
+
+window.closeJoinModal = function(){
+
+document.getElementById(
+"joinModal"
+).style.display = "none";
+
+};
+
+document.getElementById("startSharingBtn")
+.addEventListener("click", startScreenSharing);
+
+async function startScreenSharing(){
+
+try{
+
+screenStream =
+await navigator.mediaDevices.getDisplayMedia({
+video:true,
+audio:false
+});
+
+document.getElementById(
+"joinModal"
+).style.display = "none";
+
+await setDoc(
+doc(
+db,
+"attendance",
+currentUser.uid + "_" + selectedSessionId
+),
+{
+studentId:currentUser.uid,
+studentName:
+profileName.value ||
+currentUser.displayName,
+sessionId:selectedSessionId,
+present:true,
+joinedAt:serverTimestamp(),
+sharing:true
+},
+{
+merge:true
+}
+);
+
+await updateDoc(
+doc(db,"students",currentUser.uid),
+{
+isOnline:true,
+isSharing:true,
+lastSeen:serverTimestamp()
+}
+);
+
+currentSessionArea.innerHTML = `
+<div class="status status-sharing">
+🟢 Sharing Screen
+</div>
+`;
+
+const track =
+screenStream.getVideoTracks()[0];
+
+track.onended = async ()=>{
+
+await updateDoc(
+doc(db,"students",currentUser.uid),
+{
+isSharing:false,
+lastSeen:serverTimestamp()
+}
+);
+
+await setDoc(
+doc(
+db,
+"attendance",
+currentUser.uid + "_" + selectedSessionId
+),
+{
+sharing:false
+},
+{
+merge:true
+}
+);
+
+currentSessionArea.innerHTML = `
+<div class="status status-not-sharing">
+🔴 Screen Sharing Stopped
+</div>
+`;
+
+};
+
+}catch(error){
+
+alert(
+"Screen sharing permission required."
+);
+
+console.error(error);
+
+}
+
+}
+
+saveProfileBtn.addEventListener(
+"click",
+saveProfile
+);
+
+async function saveProfile(){
+
+try{
+
+saveProfileBtn.innerHTML =
+"Saving...";
+
+let photoURL =
+studentPhoto.src;
+
+const file =
+profilePhotoInput.files[0];
+
+if(file){
+
+const storageRef =
+ref(
+storage,
+"profilePhotos/" +
+currentUser.uid
+);
+
+await uploadBytes(
+storageRef,
+file
+);
+
+photoURL =
+await getDownloadURL(
+storageRef
+);
+
+}
+
+await setDoc(
+doc(
+db,
+"students",
+currentUser.uid
+),
+{
+uid:currentUser.uid,
+email:currentUser.email,
+name:profileName.value,
+registerNumber:
+registerNumber.value,
+mobileNumber:
+mobileNumber.value,
+photo:photoURL,
+updatedAt:
+serverTimestamp()
+},
+{
+merge:true
+}
+);
+
+studentPhoto.src =
+photoURL;
+
+profilePreview.src =
+photoURL;
+
+studentName.innerHTML =
+profileName.value;
+
+saveProfileBtn.innerHTML =
+"Saved Successfully";
+
+setTimeout(()=>{
+
+saveProfileBtn.innerHTML =
+"Save Profile";
+
+},2000);
+
+}catch(error){
+
+console.error(error);
+
+alert(error.message);
+
+saveProfileBtn.innerHTML =
+"Save Profile";
+
+}
+
+}
+
+profilePhotoInput.addEventListener(
+"change",
+(e)=>{
+
+const file =
+e.target.files[0];
+
+if(!file) return;
+
+const reader =
+new FileReader();
+
+reader.onload = function(event){
+
+profilePreview.src =
+event.target.result;
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+window.addEventListener(
+"beforeunload",
+async ()=>{
+
+try{
+
+if(currentUser){
+
+await updateDoc(
+doc(
+db,
+"students",
+currentUser.uid
+),
+{
+isOnline:false,
+isSharing:false,
+lastSeen:serverTimestamp()
+}
+);
+
+}
+
+}catch(error){
+
+console.log(error);
+
+}
+
+});
+
+setInterval(async()=>{
+
+if(!currentUser) return;
+
+try{
+
+await updateDoc(
+doc(
+db,
+"students",
+currentUser.uid
+),
+{
+isOnline:true,
+lastSeen:serverTimestamp()
+}
+);
+
+}catch(error){
+
+console.log(error);
+
+}
+
+},30000);
+
+</script>
+
+</body>
+</html>
