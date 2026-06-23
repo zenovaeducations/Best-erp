@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Teacher Dashboard</title>
+</head>
+
+<body>
+
+<h1>Teacher Dashboard</h1>
+
+<h3 id="teacherName"></h3>
+
+<p>Welcome Teacher</p>
+
+<button onclick="logout()">
+Logout
+</button>
+
+<script>
+
+document.getElementById(
+"teacherName"
+).innerHTML =
+localStorage.getItem("userName");
+
+function logout(){
+
+localStorage.clear();
+
+window.location =
+"index.html";
+
+}
+
+</script>
+
+</body>
+</html>
