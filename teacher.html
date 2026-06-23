@@ -2,36 +2,392 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Teacher Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Zenova Teacher Dashboard</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f4f6f9;
+}
+
+.header{
+background:#1e3a8a;
+color:white;
+padding:20px;
+}
+
+.container{
+padding:20px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+margin-bottom:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 0 10px rgba(0,0,0,.08);
+}
+
+.section{
+background:white;
+padding:20px;
+border-radius:12px;
+margin-bottom:20px;
+box-shadow:0 0 10px rgba(0,0,0,.08);
+}
+
+input,textarea{
+width:100%;
+padding:10px;
+margin-top:8px;
+margin-bottom:10px;
+box-sizing:border-box;
+}
+
+button{
+padding:10px 15px;
+border:none;
+background:#2563eb;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+.deleteBtn{
+background:red;
+margin-top:10px;
+}
+
+.sessionCard{
+border:1px solid #ddd;
+padding:15px;
+border-radius:10px;
+margin-top:10px;
+}
+
+.studentCard{
+border:1px solid #ddd;
+padding:15px;
+border-radius:10px;
+margin-top:10px;
+}
+
+</style>
 </head>
 
 <body>
 
-<h1>Teacher Dashboard</h1>
+<div class="header">
 
-<h3 id="teacherName"></h3>
+<h2>Zenova Teacher Dashboard</h2>
 
-<p>Welcome Teacher</p>
+<p id="teacherName"></p>
 
-<button onclick="logout()">
-Logout
+</div>
+
+<div class="container">
+
+<div class="cards">
+
+<div class="card">
+<h3 id="studentCount">0</h3>
+<p>Students</p>
+</div>
+
+<div class="card">
+<h3 id="sessionCount">0</h3>
+<p>Sessions</p>
+</div>
+
+<div class="card">
+<h3 id="attendanceCount">0</h3>
+<p>Attendance Records</p>
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>Create Session</h2>
+
+<input id="title" placeholder="Session Title">
+
+<input id="date" type="date">
+
+<input id="startTime" type="time">
+
+<input id="endTime" type="time">
+
+<textarea
+id="description"
+placeholder="Description">
+</textarea>
+
+<button onclick="createSession()">
+Create Session
 </button>
 
-<script>
+</div>
 
-document.getElementById(
-"teacherName"
-).innerHTML =
+<div class="section">
+
+<h2>Sessions</h2>
+
+<div id="sessions"></div>
+
+</div>
+
+<div class="section">
+
+<h2>Students</h2>
+
+<div id="students"></div>
+
+</div>
+
+<div class="section">
+
+<h2>Attendance</h2>
+
+<div id="attendance"></div>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+getDocs,
+deleteDoc,
+doc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyAkuoUAAr7zEQICxlnimpz1XUFKJA3hPA8",
+authDomain: "best-f6d59.firebaseapp.com",
+projectId: "best-f6d59",
+storageBucket: "best-f6d59.firebasestorage.app",
+messagingSenderId: "422817936552",
+appId: "1:422817936552:web:6d8bfeb0efab2e6302fe9d",
+measurementId: "G-QVZZK9T59X"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+document.getElementById("teacherName")
+.innerHTML =
 localStorage.getItem("userName");
 
-function logout(){
+window.createSession = async ()=>{
 
-localStorage.clear();
+const title =
+document.getElementById("title").value;
 
-window.location =
-"index.html";
+const date =
+document.getElementById("date").value;
+
+const startTime =
+document.getElementById("startTime").value;
+
+const endTime =
+document.getElementById("endTime").value;
+
+const description =
+document.getElementById("description").value;
+
+if(!title || !date || !startTime || !endTime){
+alert("Fill all fields");
+return;
+}
+
+await addDoc(
+collection(db,"sessions"),
+{
+title,
+date,
+startTime,
+endTime,
+description,
+createdAt:new Date().toISOString()
+}
+);
+
+alert("Session Created");
+
+loadAll();
+
+};
+
+window.deleteSession = async(id)=>{
+
+await deleteDoc(
+doc(db,"sessions",id)
+);
+
+loadAll();
+
+};
+
+async function loadSessions(){
+
+const snap =
+await getDocs(
+collection(db,"sessions")
+);
+
+document.getElementById("sessionCount")
+.innerHTML =
+snap.size;
+
+let html = "";
+
+snap.forEach((d)=>{
+
+const s = d.data();
+
+html += `
+<div class="sessionCard">
+
+<h3>${s.title}</h3>
+
+<p>${s.date}</p>
+
+<p>${s.startTime} - ${s.endTime}</p>
+
+<p>${s.description || ""}</p>
+
+<button
+class="deleteBtn"
+onclick="deleteSession('${d.id}')">
+Delete
+</button>
+
+</div>
+`;
+
+});
+
+document.getElementById("sessions")
+.innerHTML = html;
 
 }
+
+async function loadStudents(){
+
+const snap =
+await getDocs(
+collection(db,"students")
+);
+
+document.getElementById("studentCount")
+.innerHTML =
+snap.size;
+
+let html = "";
+
+snap.forEach((d)=>{
+
+const s = d.data();
+
+html += `
+<div class="studentCard">
+
+<b>${s.name}</b>
+
+<br>
+
+Reg No:
+${s.regno}
+
+<br>
+
+Mobile:
+${s.mobile}
+
+</div>
+`;
+
+});
+
+document.getElementById("students")
+.innerHTML = html;
+
+}
+
+async function loadAttendance(){
+
+const snap =
+await getDocs(
+collection(db,"attendance")
+);
+
+document.getElementById("attendanceCount")
+.innerHTML =
+snap.size;
+
+let html = "";
+
+snap.forEach((d)=>{
+
+const a = d.data();
+
+html += `
+<div class="studentCard">
+
+Student:
+${a.studentId}
+
+<br>
+
+Session:
+${a.sessionId}
+
+<br>
+
+Sharing:
+${a.sharing ? "🟢 Yes" : "🔴 No"}
+
+</div>
+`;
+
+});
+
+document.getElementById("attendance")
+.innerHTML = html;
+
+}
+
+async function loadAll(){
+
+await loadSessions();
+
+await loadStudents();
+
+await loadAttendance();
+
+}
+
+loadAll();
 
 </script>
 
