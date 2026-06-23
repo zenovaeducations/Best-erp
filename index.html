@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zenova Portal</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f6f9;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 15px rgba(0,0,0,.1);
+width:350px;
+text-align:center;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#2563eb;
+border:none;
+color:white;
+font-size:16px;
+border-radius:8px;
+cursor:pointer;
+}
+
+img{
+width:80px;
+margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>Zenova Educations</h2>
+
+<p>AI & Web Skills Development Portal</p>
+
+<button id="googleLogin">
+Continue With Google
+</button>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getAuth,
+GoogleAuthProvider,
+signInWithPopup
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyAkuoUAAr7zEQICxlnimpz1XUFKJA3hPA8",
+authDomain: "best-f6d59.firebaseapp.com",
+projectId: "best-f6d59",
+storageBucket: "best-f6d59.firebasestorage.app",
+messagingSenderId: "422817936552",
+appId: "1:422817936552:web:6d8bfeb0efab2e6302fe9d",
+measurementId: "G-QVZZK9T59X"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const provider = new GoogleAuthProvider();
+
+document
+.getElementById("googleLogin")
+.addEventListener("click", async ()=>{
+
+try{
+
+const result =
+await signInWithPopup(
+auth,
+provider
+);
+
+const user = result.user;
+
+localStorage.setItem(
+"userEmail",
+user.email
+);
+
+localStorage.setItem(
+"userName",
+user.displayName
+);
+
+if(
+user.email.toLowerCase() ===
+"zenovaeducations@gmail.com"
+){
+window.location =
+"teacher.html";
+}
+else{
+window.location =
+"student.html";
+}
+
+}
+catch(err){
+
+alert(err.message);
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
