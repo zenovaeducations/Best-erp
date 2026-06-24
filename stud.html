@@ -317,7 +317,13 @@ lastSeen:Date.now()
 );
 
 });
-
+await updateDoc(
+doc(db,"students",user.uid),
+{
+isOnline:true,
+lastSeen:Date.now()
+}
+);
 async function loadProfile(){
 
 const snap=await getDoc(
@@ -599,7 +605,19 @@ lastSeen:Date.now()
 }catch(e){}
 
 });
+window.addEventListener(
+"beforeunload",
+async()=>{
 
+await updateDoc(
+doc(db,"students",currentUser.uid),
+{
+isOnline:false,
+lastSeen:Date.now()
+}
+);
+
+});
 </script>
 
 </body>
