@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Zenova Teacher Portal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f4f8ff;
+}
+
+.header{
+background:#0b3d91;
+color:white;
+padding:20px;
+font-size:24px;
+font-weight:600;
+}
+
+.container{
+padding:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.title{
+font-size:20px;
+font-weight:600;
+margin-bottom:15px;
+color:#0b3d91;
+}
+
+input,
+textarea,
+select{
+width:100%;
+padding:12px;
+border:1px solid #ddd;
+border-radius:10px;
+margin-bottom:12px;
+}
+
+button{
+border:none;
+cursor:pointer;
+}
+
+.createBtn{
+background:#0b3d91;
+color:white;
+padding:12px 20px;
+border-radius:10px;
+}
+
+.students{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+gap:15px;
+}
+
+.studentCard{
+background:white;
+padding:15px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.studentCard img{
+width:60px;
+height:60px;
+border-radius:50%;
+margin-bottom:10px;
+}
+
+.badge{
+display:inline-block;
+padding:6px 12px;
+border-radius:30px;
+font-size:12px;
+color:white;
+margin-top:8px;
+}
+
+.online{
+background:#00b050;
+}
+
+.offline{
+background:#999;
+}
+
+.sharing{
+background:#0b3d91;
+}
+
+.viewBtn{
+margin-top:10px;
+background:#0b3d91;
+color:white;
+padding:10px 15px;
+border-radius:10px;
+}
+
+.sessionBox{
+padding:12px;
+border:1px solid #ddd;
+border-radius:10px;
+margin-bottom:10px;
+}
+
+.count{
+font-size:28px;
+font-weight:700;
+color:#0b3d91;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="header">
+Zenova Educations - Teacher Portal
+</div>
+
+<div class="container">
+
+<div class="card">
+<div class="title">Total Students</div>
+<div class="count" id="totalStudents">0</div>
+</div>
+
+<div class="card">
+
+<div class="title">
+Create Session
+</div>
+
+<input id="sessionTitle" placeholder="Session Title">
+
+<textarea
+id="sessionDescription"
+placeholder="Description"></textarea>
+
+<select id="sessionBatch">
+<option>All Students</option>
+<option>1st PUC</option>
+<option>2nd PUC</option>
+</select>
+
+<button
+class="createBtn"
+id="createSessionBtn">
+Create Session
+</button>
+
+</div>
+
+<div class="card">
+
+<div class="title">
+Active Sessions
+</div>
+
+<div id="sessionList"></div>
+
+</div>
+
+<div class="card">
+
+<div class="title">
+Students
+</div>
+
+<div class="students" id="studentList"></div>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+onSnapshot,
+serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyAkuoUAAr7zEQICxlnimpz1XUFKJA3hPA8",
+authDomain: "best-f6d59.firebaseapp.com",
+projectId: "best-f6d59",
+storageBucket: "best-f6d59.firebasestorage.app",
+messagingSenderId: "422817936552",
+appId: "1:422817936552:web:6d8bfeb0efab2e6302fe9d",
+measurementId: "G-QVZZK9T59X"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const studentList =
+document.getElementById("studentList");
+
+const totalStudents =
+document.getElementById("totalStudents");
+
+const sessionList =
+document.getElementById("sessionList");
+
+onSnapshot(
+collection(db,"students"),
+(snapshot)=>{
+
+totalStudents.innerText =
+snapshot.size;
+
+studentList.innerHTML = "";
+
+snapshot.forEach((doc)=>{
+
+const s = doc.data();
+
+studentList.innerHTML += `
+
+<div class="studentCard">
+
+<img src="${
+s.photo ||
+'https://via.placeholder.com/60'
+}">
+
+<h3>${s.name || 'Student'}</h3>
+
+<p>${s.email || ''}</p>
+
+<p>${s.course || 'No Course'}</p>
+
+<br>
+
+<span class="badge ${
+s.isOnline ? 'online':'offline'
+}">
+${s.isOnline ? 'Online':'Offline'}
+</span>
+
+${
+s.isSharing
+?
+`<span class="badge sharing">
+Sharing
+</span>`
+:
+''
+}
+
+<br>
+
+<button
+class="viewBtn"
+onclick="alert('WebRTC Viewer Next Step')">
+View Screen
+</button>
+
+</div>
+
+`;
+
+});
+
+});
+
+document
+.getElementById("createSessionBtn")
+.addEventListener(
+"click",
+async()=>{
+
+const title =
+document.getElementById("sessionTitle").value;
+
+const description =
+document.getElementById("sessionDescription").value;
+
+const batch =
+document.getElementById("sessionBatch").value;
+
+if(!title){
+
+alert("Enter title");
+
+return;
+
+}
+
+await addDoc(
+collection(db,"sessions"),
+{
+title,
+description,
+batch,
+active:true,
+createdAt:serverTimestamp()
+}
+);
+
+alert("Session Created");
+
+document.getElementById(
+"sessionTitle"
+).value="";
+
+document.getElementById(
+"sessionDescription"
+).value="";
+
+});
+
+onSnapshot(
+collection(db,"sessions"),
+(snapshot)=>{
+
+sessionList.innerHTML="";
+
+snapshot.forEach((doc)=>{
+
+const s=doc.data();
+
+sessionList.innerHTML+=`
+
+<div class="sessionBox">
+
+<b>${s.title}</b>
+
+<br>
+
+${s.description}
+
+<br><br>
+
+Batch:
+${s.batch}
+
+</div>
+
+`;
+
+});
+
+});
+
+</script>
+
+</body>
+</html>
