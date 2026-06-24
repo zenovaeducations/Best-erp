@@ -218,7 +218,14 @@ if(user.email === "zenovaeducations@gmail.com"){
 
 await setDoc(
 doc(db,"teachers",user.uid),
-userData,
+{
+uid:user.uid,
+name:user.displayName || "",
+email:user.email || "",
+photo:user.photoURL || "",
+createdAt:serverTimestamp(),
+lastLogin:serverTimestamp()
+},
 {merge:true}
 );
 
@@ -230,7 +237,20 @@ window.location.href="teacher.html";
 
 await setDoc(
 doc(db,"students",user.uid),
-userData,
+{
+uid:user.uid,
+name:user.displayName || "",
+email:user.email || "",
+photo:user.photoURL || "",
+course:"",
+registerNumber:"",
+mobileNumber:"",
+isOnline:true,
+isSharing:false,
+lastSeen:Date.now(),
+createdAt:serverTimestamp(),
+lastLogin:serverTimestamp()
+},
 {merge:true}
 );
 
