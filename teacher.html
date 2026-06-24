@@ -310,7 +310,9 @@ Logout
 </div>
 
 </div>
-
+<div id="totalStudents">0</div>
+<div id="onlineStudents">0</div>
+<div id="sharingStudents">0</div>
 <!-- SESSION -->
 
 <div class="section">
@@ -370,7 +372,13 @@ Screen Viewer
 <video id="remoteVideo" autoplay playsinline controls></video>
 
 </div>
+<div class="section">
 
+<h2>Students</h2>
+
+<div id="studentList"></div>
+
+</div>
 <!-- ATTENDANCE -->
 
 <div class="section">
@@ -439,7 +447,51 @@ loadStudents();
 loadAttendance();
 
 });
+import {
+collection,
+onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+const studentList =
+document.getElementById("studentList");
+
+onSnapshot(
+collection(db,"students"),
+(snapshot)=>{
+
+studentList.innerHTML="";
+
+snapshot.forEach((doc)=>{
+
+const s = doc.data();
+
+studentList.innerHTML += `
+
+<div class="student-card">
+
+<img src="${s.photo}" width="50">
+
+<h3>${s.name}</h3>
+
+<p>${s.email}</p>
+
+<p>${s.course || "Not Selected"}</p>
+
+<p>
+${s.isOnline ? "🟢 Online" : "🔴 Offline"}
+</p>
+
+<p>
+${s.isSharing ? "🖥️ Sharing" : "❌ Not Sharing"}
+</p>
+
+</div>
+
+`;
+
+});
+
+});
 async function loadDashboard(){
 
 onSnapshot(collection(db,"students"),(snap)=>{
@@ -609,8 +661,35 @@ attendanceTable.innerHTML+=`
 }
 
 logoutBtn.onclick=()=>logout();
+onSnapshot(
+collection(db,"students"),
+(snapshot)=>{
 
+let online=0;
+let sharing=0;
+
+snapshot.forEach((doc)=>{
+
+const s=doc.data();
+
+if(s.isOnline) online++;
+if(s.isSharing) sharing++;
+
+});
+
+document.getElementById(
+"totalStudents"
+).innerText=snapshot.size;
+
+document.getElementById(
+"onlineStudents"
+).innerText=online;
+
+document.getElementById(
+"sharingStudents"
+).innerText=sharing;
+
+});
 </script>
-
 </body>
 </html>
