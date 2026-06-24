@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zenova Educations - Teacher Portal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f4f8ff;
+display:flex;
+min-height:100vh;
+overflow:hidden;
+}
+
+/* Sidebar */
+
+.sidebar{
+width:260px;
+background:#0b3d91;
+color:white;
+padding:20px;
+display:flex;
+flex-direction:column;
+}
+
+.logo{
+font-size:24px;
+font-weight:700;
+margin-bottom:30px;
+}
+
+.nav-btn{
+width:100%;
+padding:14px;
+margin-bottom:10px;
+border:none;
+background:rgba(255,255,255,0.1);
+color:white;
+cursor:pointer;
+border-radius:12px;
+font-size:15px;
+text-align:left;
+transition:.3s;
+}
+
+.nav-btn:hover{
+background:white;
+color:#0b3d91;
+}
+
+.logout{
+margin-top:auto;
+background:#ff4d4d;
+}
+
+.main{
+flex:1;
+padding:20px;
+overflow-y:auto;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.header h1{
+color:#0b3d91;
+}
+
+.teacher-profile{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.teacher-profile img{
+width:45px;
+height:45px;
+border-radius:50%;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
+margin-bottom:25px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.card h2{
+color:#0b3d91;
+font-size:32px;
+}
+
+.card p{
+margin-top:10px;
+color:#555;
+}
+
+.section{
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+margin-bottom:20px;
+}
+
+.section-title{
+font-size:18px;
+font-weight:600;
+color:#0b3d91;
+margin-bottom:15px;
+}
+
+.student-list{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+gap:15px;
+}
+
+.student-card{
+border:1px solid #e5e5e5;
+padding:15px;
+border-radius:12px;
+}
+
+.student-card h3{
+margin-bottom:5px;
+}
+
+.badge{
+padding:4px 10px;
+border-radius:30px;
+font-size:12px;
+color:white;
+display:inline-block;
+margin-right:5px;
+}
+
+.online{
+background:#00b050;
+}
+
+.offline{
+background:#999;
+}
+
+.sharing{
+background:#0b3d91;
+}
+
+.btn{
+padding:10px 14px;
+border:none;
+cursor:pointer;
+border-radius:10px;
+font-size:14px;
+margin-top:10px;
+}
+
+.view-btn{
+background:#0b3d91;
+color:white;
+}
+
+.remove-btn{
+background:#ff4d4d;
+color:white;
+margin-left:5px;
+}
+
+video{
+width:100%;
+background:black;
+border-radius:12px;
+margin-top:10px;
+}
+
+.session-form{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:10px;
+}
+
+input,
+textarea,
+select{
+padding:12px;
+border:1px solid #ddd;
+border-radius:10px;
+outline:none;
+}
+
+.create-btn{
+background:#0b3d91;
+color:white;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:12px;
+border-bottom:1px solid #eee;
+text-align:left;
+}
+
+@media(max-width:900px){
+
+body{
+flex-direction:column;
+overflow:auto;
+}
+
+.sidebar{
+width:100%;
+flex-direction:row;
+overflow:auto;
+}
+
+.logo{
+display:none;
+}
+
+.nav-btn{
+min-width:150px;
+margin-right:10px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<div class="logo">
+Zenova Teacher
+</div>
+
+<button class="nav-btn">Dashboard</button>
+<button class="nav-btn">Sessions</button>
+<button class="nav-btn">Students</button>
+<button class="nav-btn">Attendance</button>
+<button class="nav-btn">Settings</button>
+
+<button id="logoutBtn" class="nav-btn logout">
+Logout
+</button>
+
+</div>
+
+<div class="main">
+
+<div class="header">
+
+<h1>Teacher Dashboard</h1>
+
+<div class="teacher-profile">
+<img id="teacherPhoto">
+<span id="teacherName"></span>
+</div>
+
+</div>
+
+<div class="cards">
+
+<div class="card">
+<h2 id="totalStudents">0</h2>
+<p>Total Students</p>
+</div>
+
+<div class="card">
+<h2 id="totalSessions">0</h2>
+<p>Total Sessions</p>
+</div>
+
+<div class="card">
+<h2 id="onlineStudents">0</h2>
+<p>Students Online</p>
+</div>
+
+<div class="card">
+<h2 id="sharingStudents">0</h2>
+<p>Students Sharing</p>
+</div>
+
+</div>
+
+<!-- SESSION -->
+
+<div class="section">
+
+<div class="section-title">
+Create Session
+</div>
+
+<div class="session-form">
+
+<input id="title" placeholder="Title">
+
+<input id="date" type="date">
+
+<input id="startTime" type="time">
+
+<input id="endTime" type="time">
+
+<select id="batch">
+<option>All Students</option>
+<option>1st PUC</option>
+<option>2nd PUC</option>
+</select>
+
+</div>
+
+<textarea id="description"
+placeholder="Description"
+style="width:100%;margin-top:10px;height:100px"></textarea>
+
+<button class="btn create-btn" id="createSession">
+Create Session
+</button>
+
+</div>
+
+<!-- LIVE STUDENTS -->
+
+<div class="section">
+
+<div class="section-title">
+Live Student Monitoring
+</div>
+
+<div id="studentList" class="student-list"></div>
+
+</div>
+
+<!-- VIEWER -->
+
+<div class="section">
+
+<div class="section-title">
+Screen Viewer
+</div>
+
+<video id="remoteVideo" autoplay playsinline controls></video>
+
+</div>
+
+<!-- ATTENDANCE -->
+
+<div class="section">
+
+<div class="section-title">
+Attendance
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>Student</th>
+<th>Session</th>
+<th>Batch</th>
+<th>Joined</th>
+</tr>
+</thead>
+
+<tbody id="attendanceTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import {
+auth,
+db,
+logout
+} from "./firebase.js";
+
+import {
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+collection,
+addDoc,
+deleteDoc,
+doc,
+getDocs,
+onSnapshot,
+query
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+let teacher;
+
+const studentList=document.getElementById("studentList");
+const remoteVideo=document.getElementById("remoteVideo");
+
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user) location.href="index.html";
+
+teacher=user;
+
+document.getElementById("teacherName").innerText=user.displayName;
+document.getElementById("teacherPhoto").src=user.photoURL;
+
+loadDashboard();
+loadStudents();
+loadAttendance();
+
+});
+
+async function loadDashboard(){
+
+onSnapshot(collection(db,"students"),(snap)=>{
+
+let online=0;
+let sharing=0;
+
+document.getElementById("totalStudents").innerText=snap.size;
+
+snap.forEach(doc=>{
+
+const s=doc.data();
+
+if(s.isOnline) online++;
+if(s.isSharing) sharing++;
+
+});
+
+document.getElementById("onlineStudents").innerText=online;
+document.getElementById("sharingStudents").innerText=sharing;
+
+});
+
+onSnapshot(collection(db,"sessions"),(snap)=>{
+
+document.getElementById("totalSessions").innerText=snap.size;
+
+});
+
+}
+
+async function loadStudents(){
+
+onSnapshot(collection(db,"students"),(snap)=>{
+
+studentList.innerHTML="";
+
+snap.forEach((student)=>{
+
+const s=student.data();
+
+studentList.innerHTML+=`
+
+<div class="student-card">
+
+<h3>${s.name||"Student"}</h3>
+
+<p>${s.email||""}</p>
+
+<p>${s.course||""}</p>
+
+<br>
+
+<span class="badge ${s.isOnline ? 'online':'offline'}">
+${s.isOnline ? 'Online':'Offline'}
+</span>
+
+${s.isSharing ? `
+<span class="badge sharing">
+Sharing
+</span>
+` : ''}
+
+<br>
+
+<button class="btn view-btn"
+onclick="viewScreen('${student.id}')">
+View Screen
+</button>
+
+<button class="btn remove-btn"
+onclick="removeStudent('${student.id}')">
+Remove
+</button>
+
+</div>
+
+`;
+
+});
+
+});
+
+}
+
+window.removeStudent=async(id)=>{
+
+await deleteDoc(doc(db,"students",id));
+
+};
+
+window.viewScreen=async(studentId)=>{
+
+const pc=new RTCPeerConnection();
+
+const callDoc=doc(collection(db,"calls"));
+
+const offerCandidates=collection(callDoc,"offerCandidates");
+const answerCandidates=collection(callDoc,"answerCandidates");
+
+pc.ontrack=(event)=>{
+
+remoteVideo.srcObject=event.streams[0];
+
+};
+
+const offer=await pc.createOffer();
+
+await pc.setLocalDescription(offer);
+
+await addDoc(collection(db,"calls"),{
+
+studentId,
+offer:{
+type:offer.type,
+sdp:offer.sdp
+}
+
+});
+
+};
+
+document.getElementById("createSession")
+.addEventListener("click",async()=>{
+
+await addDoc(collection(db,"sessions"),{
+
+title:title.value,
+description:description.value,
+date:date.value,
+startTime:startTime.value,
+endTime:endTime.value,
+batch:batch.value,
+createdAt:new Date()
+
+});
+
+alert("Session Created");
+
+});
+
+function loadAttendance(){
+
+onSnapshot(collection(db,"attendance"),(snap)=>{
+
+attendanceTable.innerHTML="";
+
+snap.forEach((docu)=>{
+
+const a=docu.data();
+
+attendanceTable.innerHTML+=`
+
+<tr>
+<td>${a.studentName}</td>
+<td>${a.sessionTitle}</td>
+<td>${a.batch}</td>
+<td>${new Date(a.joinedAt).toLocaleString()}</td>
+</tr>
+
+`;
+
+});
+
+});
+
+}
+
+logoutBtn.onclick=()=>logout();
+
+</script>
+
+</body>
+</html>
