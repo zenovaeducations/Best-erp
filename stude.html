@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Zenova Student Portal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f4f8ff;
+padding-bottom:30px;
+}
+
+.header{
+background:#0b3d91;
+color:white;
+padding:20px;
+border-radius:0 0 20px 20px;
+}
+
+.profile{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.profile img{
+width:65px;
+height:65px;
+border-radius:50%;
+border:3px solid white;
+}
+
+.container{
+padding:15px;
+}
+
+.card{
+background:white;
+padding:18px;
+border-radius:15px;
+margin-bottom:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.title{
+font-size:18px;
+font-weight:600;
+margin-bottom:12px;
+color:#0b3d91;
+}
+
+.status{
+padding:8px 14px;
+border-radius:30px;
+display:inline-block;
+color:white;
+font-size:13px;
+}
+
+.active{
+background:#00b050;
+}
+
+.inactive{
+background:#999;
+}
+
+.session{
+border:1px solid #ddd;
+padding:15px;
+border-radius:12px;
+margin-bottom:12px;
+}
+
+.joinBtn{
+background:#0b3d91;
+color:white;
+padding:10px 15px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+margin-top:10px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+
+<div class="profile">
+
+<img id="studentPhoto">
+
+<div>
+<h2 id="studentName">Student</h2>
+<p id="studentEmail"></p>
+</div>
+
+</div>
+
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<div class="title">
+Screen Sharing Status
+</div>
+
+<span
+class="status inactive"
+id="shareStatus">
+Not Sharing
+</span>
+
+</div>
+
+<div class="card">
+
+<div class="title">
+Available Sessions
+</div>
+
+<div id="sessionList"></div>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getAuth,
+onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+getFirestore,
+doc,
+updateDoc,
+collection,
+onSnapshot,
+serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyAkuoUAAr7zEQICxlnimpz1XUFKJA3hPA8",
+authDomain: "best-f6d59.firebaseapp.com",
+projectId: "best-f6d59",
+storageBucket: "best-f6d59.firebasestorage.app",
+messagingSenderId: "422817936552",
+appId: "1:422817936552:web:6d8bfeb0efab2e6302fe9d",
+measurementId: "G-QVZZK9T59X"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser;
+let screenStream;
+
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user){
+
+window.location.href="index.html";
+return;
+
+}
+
+currentUser=user;
+
+studentName.innerText =
+user.displayName;
+
+studentEmail.innerText =
+user.email;
+
+studentPhoto.src =
+user.photoURL;
+
+await updateDoc(
+doc(db,"students",user.uid),
+{
+isOnline:true,
+lastSeen:Date.now()
+}
+);
+
+});
+
+onSnapshot(
+collection(db,"sessions"),
+(snapshot)=>{
+
+sessionList.innerHTML="";
+
+snapshot.forEach((docu)=>{
+
+const session=docu.data();
+
+sessionList.innerHTML += `
+
+<div class="session">
+
+<h3>${session.title}</h3>
+
+<p>${session.description}</p>
+
+<p><b>Batch:</b>
+${session.batch}</p>
+
+<button
+class="joinBtn"
+onclick="joinSession('${docu.id}')">
+
+Join Session
+
+</button>
+
+</div>
+
+`;
+
+});
+
+});
+
+window.joinSession = async(sessionId)=>{
+
+try{
+
+screenStream =
+await navigator.mediaDevices.getDisplayMedia({
+video:true,
+audio:false
+});
+
+await updateDoc(
+doc(db,"students",currentUser.uid),
+{
+isSharing:true,
+currentSession:sessionId,
+joinedAt:serverTimestamp()
+}
+);
+
+shareStatus.innerText =
+"Sharing Screen";
+
+shareStatus.className =
+"status active";
+
+screenStream
+.getVideoTracks()[0]
+.onended = async()=>{
+
+await updateDoc(
+doc(db,"students",currentUser.uid),
+{
+isSharing:false
+}
+);
+
+shareStatus.innerText =
+"Not Sharing";
+
+shareStatus.className =
+"status inactive";
+
+};
+
+alert(
+"Screen Sharing Started"
+);
+
+}catch(error){
+
+console.log(error);
+
+}
+
+};
+
+window.addEventListener(
+"beforeunload",
+async()=>{
+
+if(currentUser){
+
+try{
+
+await updateDoc(
+doc(db,"students",currentUser.uid),
+{
+isOnline:false,
+isSharing:false,
+lastSeen:Date.now()
+}
+);
+
+}catch(e){}
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
